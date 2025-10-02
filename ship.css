@@ -1,0 +1,265 @@
+/* ===== ship.css v2 — ספינת-חתך מודרנית, עשירה באנימציות ===== */
+:root{
+  --ship-metal-1:#edf2f8;
+  --ship-metal-2:#d8e1ee;
+  --ship-metal-3:#b8c7dc;
+  --ship-shadow:#0a1a2e;
+  --ship-glass-1:#d9efffdd;
+  --ship-glass-2:#bfe1ffcc;
+  --ship-accent:#4fb6ff;
+  --ship-accent-2:#6f5bf0;
+  --ship-blueprint:#b5d2ff35;
+  --shine:#ffffffb0;
+}
+
+/* --- תנועה כללית של הספינה (ציפה וקצת גלגול) --- */
+@keyframes shipFloat {
+  0%,100%{ transform: translateY(0) rotate(-0.2deg) }
+  50%    { transform: translateY(-6px) rotate(0.2deg) }
+}
+.galleon.modern{
+  position:relative; pointer-events:auto;
+  width:min(780px,76vw); height:220px;
+  margin:10px 0 0 8px;
+  filter: drop-shadow(0 18px 38px rgba(0,0,0,.18));
+  animation: shipFloat 5.4s ease-in-out infinite;
+}
+
+/* ===== גוף הספינה (Hull) ===== */
+.galleon.modern .g-hull{
+  position:absolute; inset:auto 0 0 0; height:102px;
+  background:
+    linear-gradient(180deg,var(--ship-metal-1),var(--ship-metal-2) 65%,var(--ship-metal-3)),
+    radial-gradient(120% 100% at 10% 0%, #ffffff70, transparent 40%);
+  clip-path: polygon(
+    0% 100%, 6% 90%, 18% 84%, 36% 80%,
+    58% 76%, 82% 76%, 94% 84%, 100% 88%,
+    100% 100%, 0% 100%
+  );
+  border-bottom-left-radius:22px;
+  box-shadow:
+    inset 0 8px 22px rgba(255,255,255,.55),
+    inset 0 -14px 24px rgba(0,0,0,.30);
+}
+.galleon.modern .g-hull::before{
+  /* קווי מתאר דקה + הדגשת רכס גוף */
+  content:""; position:absolute; inset:auto 0 28px 0; height:2px;
+  background: linear-gradient(90deg, #ffffffaa, #8fb3da66);
+}
+@keyframes hullShine { from{ transform:translateX(-120%) } to{ transform:translateX(120%) } }
+.galleon.modern .g-hull::after{
+  /* סווייפ ברק עדין לאורך הגוף */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(120deg, transparent 15%, var(--shine) 35%, transparent 60%);
+  mix-blend-mode:screen; opacity:.6;
+  transform:translateX(-120%);
+  animation:hullShine 4.5s linear infinite;
+}
+
+/* צל תחת הגוף (קצת דינמי) */
+@keyframes underShadow {
+  0%,100%{ transform:skewX(-8deg) translateY(0) }
+  50%    { transform:skewX(-8deg) translateY(2px) }
+}
+.galleon.modern .g-hull + .shadow,
+.galleon.modern .g-hull::marker{ display:none }
+.galleon.modern .g-hull-shadow{},
+.galleon.modern .g-hull::marker{display:none}
+.galleon.modern .g-hull-shadow {}
+.galleon.modern .g-hull ~ .g-hull-shadow {display:none}
+.galleon.modern .g-hull::selection{background:transparent}
+.galleon.modern .g-hull::part(){}
+
+.galleon.modern .g-hull::marker{}
+
+/* נשתמש בצל ממוקם ע״י האלמנט הבא (ה-prow מטפל בגלים) */
+.galleon.modern .g-hull i{ display:none }
+.galleon.modern .g-hull:after-shadow{ display:none }
+
+/* ===== ירכתיים מודרניות + wake מנוע ===== */
+.galleon.modern .g-stern{
+  position:absolute; bottom:86px; right:-12px;
+  width:158px; height:90px;
+  background: linear-gradient(180deg, #e6ecf5, #c6d2e3);
+  border-radius: 14px;
+  clip-path: polygon(0 0,100% 10%,100% 100%,10% 100%,0 82%);
+  box-shadow: inset 0 8px 18px rgba(255,255,255,.5);
+}
+.galleon.modern .g-stern::after{
+  /* wake של המדחף — פסים קלים שזזים לאחור */
+  content:""; position:absolute; right:-70px; bottom:-6px; width:160px; height:24px;
+  background:
+    repeating-linear-gradient(90deg, rgba(160,210,255,.55) 0 12px, rgba(160,210,255,0) 12px 24px);
+  filter:blur(2px);
+  opacity:.6;
+  animation:wakeMove 2.8s linear infinite;
+}
+@keyframes wakeMove { from{ transform:translateX(0) } to{ transform:translateX(60px) } }
+
+/* ===== חרטום חד + רסס מים וקצף ===== */
+.galleon.modern .g-prow{
+  position:absolute; bottom:68px; left:-26px;
+  width:118px; height:60px;
+  background: linear-gradient(180deg,#e3e9f3,#c3cedd);
+  clip-path: polygon(100% 0, 100% 70%, 0 100%, 0 40%, 54% 0);
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.25));
+}
+.galleon.modern .g-prow::before,
+.galleon.modern .g-prow::after{
+  content:""; position:absolute; bottom:-8px; right:-8px; width:130px; height:34px; pointer-events:none;
+  background:
+    radial-gradient(60px 20px at 10% 60%, #ffffffcc, transparent 70%),
+    radial-gradient(80px 26px at 40% 70%, #e6f8ffcc, transparent 70%);
+  filter:blur(1px);
+  animation: bowWave 2.6s ease-in-out infinite;
+}
+.galleon.modern .g-prow::after{
+  bottom:-16px; right:-26px; width:160px; height:36px; opacity:.6; animation-delay:-1.3s;
+}
+@keyframes bowWave{
+  0%,100%{ transform: translateX(0) }
+  50%{ transform: translateX(10px) }
+}
+
+/* ===== גשר זכוכית (Bridge) עם סווייפ והילה ===== */
+.galleon.modern .g-mast{
+  position:absolute; bottom:136px; left:58%;
+  width:220px; height:64px;
+  background: linear-gradient(180deg,var(--ship-glass-1),var(--ship-glass-2));
+  border: 1px solid #d6eaff; border-radius: 16px 16px 10px 10px;
+  backdrop-filter: blur(2px) saturate(135%);
+  box-shadow: 0 8px 14px rgba(0,0,0,.12), inset 0 1px 0 #fff;
+  overflow:hidden;
+}
+@keyframes glassSweep { from{ transform:translateX(-120%) } to{ transform:translateX(120%) } }
+.galleon.modern .g-mast::before{
+  /* סווייפ אור על הזכוכית */
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(120deg, transparent 10%, rgba(255,255,255,.75) 35%, transparent 60%);
+  mix-blend-mode:screen; opacity:.7;
+  transform:translateX(-120%);
+  animation: glassSweep 3.6s ease-in-out infinite;
+}
+@keyframes bridgeGlow{
+  0%,100%{ box-shadow:0 8px 14px rgba(0,0,0,.12), 0 0 0 0 rgba(79,182,255,.0) }
+  60%    { box-shadow:0 8px 14px rgba(0,0,0,.12), 0 0 26px 6px rgba(79,182,255,.35) }
+}
+.galleon.modern .g-mast{ animation: bridgeGlow 4.2s ease-in-out infinite }
+
+/* אנטנת רדאר — sweep מעגלי אמיתי עם conic-gradient */
+@keyframes radarSweep{ from{ transform:translate(-50%,-50%) rotate(0) } to{ transform:translate(-50%,-50%) rotate(360deg) } }
+.galleon.modern .g-mast::after{
+  content:""; position:absolute; top:-20px; left:50%;
+  width:54px; height:54px; border-radius:50%;
+  background:
+    conic-gradient(from 0deg, rgba(111,91,240,.0) 0 310deg, rgba(111,91,240,.35) 340deg 360deg),
+    radial-gradient(circle at 50% 50%, #ffffff, #d6ecff 60%);
+  border:1px solid #dbeafe;
+  transform:translate(-50%,-50%);
+  animation:radarSweep 2.8s linear infinite;
+  box-shadow:0 6px 12px rgba(0,0,0,.18);
+}
+
+/* ===== “מפרשים” = פאנלים מזוגגים עם רפלקשן גל ===== */
+@keyframes glassRipple {
+  0%,100%{ background-position:0% 50% }
+  50%{ background-position:100% 50% }
+}
+.galleon.modern .g-sail{
+  position:absolute; border:1px solid #d6eaff; border-radius:14px; overflow:hidden;
+  background:
+    linear-gradient(180deg, #ffffffee, #eaf4ffcc),
+    linear-gradient(90deg,#7dd3fc,#60a5fa,#7dd3fc);
+  background-size: auto, 200% 100%;
+  animation: glassRipple 8s linear infinite;
+}
+.galleon.modern .g-sail-a{
+  top:92px; left:44%;
+  width:250px; height:74px;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+  box-shadow:0 12px 18px rgba(0,0,0,.12);
+}
+.galleon.modern .g-sail-b{
+  top:134px; left:36%;
+  width:292px; height:60px;
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+  box-shadow:0 10px 16px rgba(0,0,0,.10);
+}
+
+/* דגל מתנופף */
+@keyframes flagFlutter{
+  0%,100%{ transform:skewX(-15deg) translateX(0) }
+  50%{ transform:skewX(-11deg) translateX(4px) }
+}
+.galleon.modern .g-flag{
+  position:absolute; top:30px; left:calc(58% + 100px);
+  width:62px; height:18px;
+  background:linear-gradient(90deg,#22d3ee,#60a5fa);
+  border-radius:0 12px 12px 0;
+  box-shadow:0 6px 12px rgba(0,0,0,.18);
+  animation: flagFlutter 2.2s ease-in-out infinite;
+}
+
+/* חלונות עגולים עם הבהוב עדין */
+@keyframes portholePulse{
+  0%,100%{ box-shadow:inset 0 0 0 2px #e6f3ff, 0 0 8px #7cc3ff55; opacity:.95 }
+  60%    { box-shadow:inset 0 0 0 2px #e6f3ff, 0 0 16px #7cc3ffaa; opacity:1 }
+}
+.galleon.modern .g-portholes{ position:absolute; bottom:26px; left:24px; display:flex; gap:12px }
+.galleon.modern .g-portholes span{
+  width:12px; height:12px; border-radius:50%;
+  background: radial-gradient(circle at 35% 35%, #bfe0ff, #7dbbf7);
+  animation: portholePulse 3.4s ease-in-out infinite;
+}
+
+/* מסגרת כותרת מזכוכית */
+.galleon.modern .g-title{
+  position:absolute; bottom:18px; right:18px; text-align:right;
+  padding:10px 14px; border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.62));
+  border:1px solid rgba(255,255,255,.78); backdrop-filter: blur(8px) saturate(130%);
+  box-shadow: inset 0 1px 0 #fff, 0 10px 18px rgba(0,0,0,.10);
+}
+.galleon.modern .brand-he{
+  margin:0; font:900 clamp(38px,5.6vw,78px)/0.95 "Frank Ruhl Libre",serif;
+  background:linear-gradient(180deg,#10203a,#1e40af 45%,#22d3ee 95%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 2px 0 #fff8,0 10px 18px rgba(34,211,238,.24);
+}
+.galleon.modern .brand-sub{ margin:2px 2px 0 0; font:700 clamp(12px,1.5vw,18px)/1 "Rubik"; color:#0f2c4a; opacity:.85 }
+
+/* ===== שכבת בלופרינט נעה ברקע הספינה ===== */
+@keyframes blueprintDrift{
+  0%{ background-position:0 0, 0 0 }
+  100%{ background-position:200px 0, 0 200px }
+}
+.galleon.modern::before{
+  content:"";
+  position:absolute; inset:22px 6px 84px 70px;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, var(--ship-blueprint) 0 1px, transparent 1px 15px),
+    repeating-linear-gradient(90deg, var(--ship-blueprint) 0 1px, transparent 1px 15px);
+  animation: blueprintDrift 30s linear infinite;
+  -webkit-mask: radial-gradient(120% 120% at 0% 100%, #0000 47%, #000 48%);
+          mask: radial-gradient(120% 120% at 0% 100%, #0000 47%, #000 48%);
+  border-radius:16px;
+}
+
+/* סימון קומות */
+.galleon.modern::after{
+  content:"";
+  position:absolute; left:16%; right:20%; bottom:96px; height:1px;
+  background:linear-gradient(90deg,#8bb4e7aa,transparent 70%);
+  box-shadow:0 16px 0 0 #8bb4e755, 0 32px 0 0 #8bb4e745; 
+  transform:skewX(-8deg);
+  opacity:.9;
+}
+
+/* התאמות למסכים צרים */
+@media (max-width:480px){
+  .galleon.modern{ width:92vw; height:202px }
+  .galleon.modern .g-mast{ left:54%; width:198px }
+  .galleon.modern .g-sail-a{ left:40%; width:222px }
+  .galleon.modern .g-sail-b{ left:32%; width:252px }
+}
