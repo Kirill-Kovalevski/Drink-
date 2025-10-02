@@ -9,22 +9,26 @@
 </head>
 <body>
 
-  <!-- גל במסך מלא + ספינת מפרשים עם הכותרת -->
+  <!-- גל במסך מלא + גאליאון סביב הכותרת -->
   <header class="o-header">
     <div class="ripple-hero edge hero-full">
       <canvas id="rippleHero"></canvas>
 
-      <!-- הכותרת בתוך ספינת מפרשים (שמאל) -->
       <div class="hero-overlay left">
-        <div class="ship">
-          <div class="mast"></div>
-          <div class="sail sail-a"></div>
-          <div class="sail sail-b"></div>
-          <div class="sail sail-c"></div>
-          <div class="prow"></div>
-          <div class="title">
+        <div class="galleon">
+          <div class="g-hull"></div>
+          <div class="g-stern"></div>
+          <div class="g-prow"></div>
+          <div class="g-mast"></div>
+          <div class="g-sail g-sail-a"></div>
+          <div class="g-sail g-sail-b"></div>
+          <div class="g-flag"></div>
+          <div class="g-title">
             <h1 class="brand-he">דרינק!</h1>
             <p class="brand-sub">מונה מים אישי</p>
+          </div>
+          <div class="g-portholes">
+            <span></span><span></span><span></span>
           </div>
         </div>
       </div>
@@ -33,7 +37,7 @@
     <blockquote id="quote" class="quote" aria-live="polite">טוען…</blockquote>
   </header>
 
-  <!-- קנבס קונפטי ענקי על כל המסך -->
+  <!-- קנבס קונפטי על כל המסך -->
   <canvas id="confettiTop" class="confetti-top" aria-hidden="true"></canvas>
 
   <main class="o-main">
@@ -50,45 +54,45 @@
           </select>
         </label>
 
-        <!-- משקל (בלי יחידות) -->
+        <!-- משקל -->
         <label>משקל
-          <div class="row weight-row">
+          <div class="row metric-row">
             <button id="openWeight" class="btn ghost equal" type="button">בחר/י משקל</button>
             <div class="stepper">
-              <button class="step" type="button" id="wMinus" aria-label="פחות">−</button>
+              <button class="step" type="button" id="wPlus"  aria-label="יותר">+</button>
               <input id="weight" type="number" min="30" max="200" step="0.5" inputmode="decimal" />
-              <button class="step" type="button" id="wPlus" aria-label="יותר">+</button>
+              <button class="step" type="button" id="wMinus" aria-label="פחות">−</button>
             </div>
           </div>
         </label>
 
         <!-- גיל -->
         <label>גיל
-          <div class="row">
+          <div class="row metric-row">
             <button id="openAge" class="btn ghost equal" type="button">בחר/י גיל</button>
             <div class="stepper">
-              <button class="step" type="button" id="aMinus" aria-label="פחות">−</button>
+              <button class="step" type="button" id="aPlus"  aria-label="יותר">+</button>
               <input id="age" type="number" min="5" max="120" step="1" placeholder="בשנים" />
-              <button class="step" type="button" id="aPlus" aria-label="יותר">+</button>
+              <button class="step" type="button" id="aMinus" aria-label="פחות">−</button>
             </div>
           </div>
         </label>
 
-        <!-- גובה — אותו עיצוב כמו משקל/גיל (בלי ס״מ) -->
+        <!-- גובה -->
         <label>גובה
-          <div class="row">
+          <div class="row metric-row">
             <button id="openHeight" class="btn ghost equal" type="button">בחר/י גובה</button>
             <div class="stepper">
-              <button class="step" type="button" id="hMinus" aria-label="פחות">−</button>
+              <button class="step" type="button" id="hPlus"  aria-label="יותר">+</button>
               <input id="height" type="number" min="100" max="230" step="1" placeholder="גובה" />
-              <button class="step" type="button" id="hPlus" aria-label="יותר">+</button>
+              <button class="step" type="button" id="hMinus" aria-label="פחות">−</button>
             </div>
           </div>
         </label>
 
         <label>דקות פעילות היום
           <div class="select-suffix">
-            <select id="activeMin" class="with-suffix">
+            <select id="activeMin" class="with-suffix nice-select">
               <option value="0">0</option>
               <option value="15">15</option>
               <option value="30" selected>30</option>
@@ -108,8 +112,8 @@
 
           <div class="spacer"></div>
 
-          <!-- גובה (אלטיטודה) — אייקון הר קטן -->
-          <button id="openAltitude" class="btn icon-btn" type="button" aria-label="גובה" title="גובה">
+          <!-- אייקון גובה־מקום -->
+          <button id="openAltitude" class="btn icon-btn" type="button" aria-label="גובה מקום" title="גובה מקום">
             <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="#60a5fa" stroke-width="1.8">
               <defs><linearGradient id="altG" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#6f5bf0"/>
@@ -119,7 +123,7 @@
             </svg>
           </button>
 
-          <!-- קפה — אייקון ספל קטן -->
+          <!-- אייקון קפה -->
           <button id="openCoffee" class="btn icon-btn" type="button" aria-label="קפה" title="קפה">
             <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="#60a5fa" stroke-width="1.8">
               <path d="M3 9h13v6a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9z" fill="#e6f4ff" stroke="#7cc3ff"/>
@@ -132,23 +136,23 @@
         <button class="btn ripple equal" type="submit">חשב/י</button>
       </form>
 
+      <!-- יעד ממורכז + שימר -->
       <output id="result" class="result">
         <div class="totals">
-          <div class="total-item">
+          <div class="total-item shimmer">
             <span class="lbl">יעד:</span>
             <span id="targetL" class="num">—</span>
             <span class="unit">ליטר</span>
-            <span class="cups">
-              <span id="targetCups" class="num">—</span>
-              <span class="unit">כוסות</span>
-            </span>
+            <span class="sep">·</span>
+            <span id="targetCups" class="num">—</span>
+            <span class="unit">כוסות</span>
           </div>
         </div>
 
         <!-- מד התקדמות Edge-to-Edge -->
         <div class="progress river edge" id="river">
           <div class="progress-head">
-            <label for="progressRange">שתייה היום</label>
+            <label>שתייה היום</label>
             <div class="reading">
               <span id="intakeCups" class="num">0.0</span><span class="unit">כוס</span>
               <span class="sep">·</span>
@@ -163,14 +167,13 @@
             </div>
           </div>
 
+          <!-- ריווח נדיב יותר בין הכפתורים -->
           <div class="row btn-row roomy">
             <button id="add250"  class="btn ghost ripple equal">+250 מ״ל</button>
             <button id="add500"  class="btn ghost ripple equal">+500 מ״ל</button>
             <button id="add1000" class="btn ghost ripple equal">+1 ליטר</button>
             <button id="resetIntake" class="btn danger ripple equal">איפוס</button>
           </div>
-
-          <input id="progressRange" type="range" min="0" max="4000" step="50" value="0" />
         </div>
       </output>
     </section>
@@ -182,7 +185,7 @@
       <div class="grid">
         <label>כל כמה זמן להזכיר?
           <div class="select-suffix">
-            <select id="remEvery" class="with-suffix">
+            <select id="remEvery" class="with-suffix nice-select">
               <option>15</option><option>30</option><option selected>45</option><option>60</option><option>90</option>
             </select>
             <span class="suffix">דקות</span>
@@ -205,7 +208,7 @@
       <div class="grid">
         <label>בחר/י זמן
           <div class="select-suffix">
-            <select id="alarmMin" class="with-suffix"></select>
+            <select id="alarmMin" class="with-suffix nice-select"></select>
             <span class="suffix">דקות</span>
           </div>
         </label>
@@ -220,12 +223,12 @@
 
   <footer class="o-foot"><span class="footnote">© 2025 דרינק! · שתו במודעות וברכות.</span></footer>
 
-  <!-- מודלים -->
+  <!-- מודלים (מרוכזים; סגירה אוטומטית לאחר בחירה) -->
   <div id="weightModal"  class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>בחר/י משקל</h3><div id="weightChips" class="chips"></div><div class="row"><button id="closeWeight" class="btn equal">סגור</button></div></div></div>
   <div id="ageModal"     class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>בחר/י גיל</h3><div id="ageChips" class="chips"></div><div class="row"><button id="closeAge" class="btn equal">סגור</button></div></div></div>
   <div id="heightModal"  class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>בחר/י גובה</h3><div id="heightChips" class="chips"></div><div class="row"><button id="closeHeight" class="btn equal">סגור</button></div></div></div>
   <div id="coffeeModal"  class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>קפה — כוסות או מ״ל</h3><div id="coffeeChips" class="chips"></div><div class="row" style="margin-top:10px"><input id="coffeeMl" type="number" min="0" step="10" placeholder="הכנס/י מ״ל" /><button id="setCoffeeMl" class="btn">שמור מ״ל</button></div><p class="micro">כל כוס (~240 מ״ל) מוסיפה ~100 מ״ל ליעד היומי.</p><div class="row"><button id="closeCoffee" class="btn equal">סגור</button></div></div></div>
-  <div id="altitudeModal" class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>גובה</h3><div id="altitudeChips" class="chips"></div><div class="row"><button id="closeAltitude" class="btn equal">סגור</button></div></div></div>
+  <div id="altitudeModal" class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>גובה מקום</h3><div id="altitudeChips" class="chips"></div><div class="row"><button id="closeAltitude" class="btn equal">סגור</button></div></div></div>
 
   <script src="app.js"></script>
 </body>

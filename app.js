@@ -1,17 +1,17 @@
-// ===== דרינק! — Wave Fullscreen + Ship + Huge Confetti + UX =====
+// ===== דרינק! — Wave Fullscreen + Galleon + Huge Confetti + Polished UX =====
 const $=(s,r=document)=>r.querySelector(s);
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const cupsFromMl=ml=>(ml/240).toFixed(1);
 const L=ml=>(ml/1000).toFixed(2);
 
-const state=JSON.parse(localStorage.getItem('drink.v11')||'{}');
+const state=JSON.parse(localStorage.getItem('drink.v12')||'{}');
 
 /* DOM */
 const sex=$('#sex'), weight=$('#weight'), age=$('#age'), height=$('#height');
 const activeMin=$('#activeMin'); const isHot=$('#isHot'), preg=$('#pregnant'), lact=$('#lactating');
 const form=$('#calcForm');
 const targetL=$('#targetL'), targetCups=$('#targetCups');
-const range=$('#progressRange'), bar=$('#bar'), droplet=$('.droplet');
+const bar=$('#bar'), droplet=$('.droplet');
 const add250=$('#add250'), add500=$('#add500'), add1000=$('#add1000'), resetBtn=$('#resetIntake');
 const intakeMlEl=$('#intakeMl'), intakeCupsEl=$('#intakeCups');
 const remEvery=$('#remEvery'), startRem=$('#startRem'), stopRem=$('#stopRem'), testPing=$('#testPing'), playSound=$('#playSound'), vibrate=$('#vibrate');
@@ -60,7 +60,7 @@ let ding=null; const playDing=()=>{ if(!ding) ding=makeDing(); try{ding();}catch
 /* Bubbles in river */
 (function bubblesRunner(){const ctx=bubbles.getContext('2d');function resize(){bubbles.width=bubbles.offsetWidth;bubbles.height=bubbles.offsetHeight}resize();addEventListener('resize',resize);const parts=Array.from({length:28},()=>({x:Math.random()*bubbles.width,y:bubbles.height+Math.random()*40,r:2+Math.random()*3,vy:.3+Math.random()*.6,a:.15+Math.random()*.25}));(function tick(){ctx.clearRect(0,0,bubbles.width,bubbles.height);ctx.fillStyle='rgba(255,255,255,0.9)';for(const p of parts){p.y-=p.vy;if(p.y+p.r<0){p.y=bubbles.height+Math.random()*20;p.x=Math.random()*bubbles.width;}ctx.globalAlpha=p.a;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}requestAnimationFrame(tick);})();})();
 
-/* יעד מים – מודל פשוט עם התאמות פעילות/אקלים/הריון/גובה-מקום/קפה */
+/* יעד מים — כולל פעילות/אקלים/הריון/אלטיטודה/קפה + התאמת BMI */
 function calcTargetMl(){
   const s=sex.value, kg=+weight.value||0;
   const h=+height.value||0, active=+activeMin.value||0;
@@ -74,17 +74,16 @@ function calcTargetMl(){
   return Math.round(Math.max(1500, Math.min(7500, Lp*1000)));
 }
 
-/* Numbers */
+/* מספרים עם אנימציה */
 function animateNumber(el,to,dur=320){const from=parseFloat(el.textContent.replace(/[^\d.]/g,''))||0,start=performance.now();function f(n){const p=Math.min(1,(n-start)/dur);const v=from+(to-from)*p;el.textContent= el===intakeMlEl ? Math.round(v) : (Math.round(v*10)/10).toFixed(1); if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
 
-/* Quotes by progress */
+/* ציטוט לפי התקדמות */
 function quoteByProgress(pct){const idx=Math.min(QUOTES.length-1, Math.floor(pct/100*(QUOTES.length))); const q=QUOTES[idx]; quoteEl.textContent=`“${q.t}” — ${q.a}`}
 
-/* Render */
+/* רנדר */
 function render(){
   const ml=calcTargetMl(); state.targetMl=ml;
   targetL.textContent=L(ml); targetCups.textContent=cupsFromMl(ml);
-  range.max=String(Math.max(ml,2000));
   const cur=state.intakeMl||0; const pct=Math.min(100,Math.round((cur/ml)*100));
   bar.style.width=pct+'%'; droplet.style.setProperty('--pct', pct);
   bar.classList.remove('stage1','stage2','stage3');
@@ -94,18 +93,18 @@ function render(){
   quoteByProgress(pct);
   if(!state.hitGoal && pct>=100){ state.hitGoal=true; confettiBurstTop(); ping('🎉 יעד המים הושג!'); setTimeout(askForTomorrow,900); }
   else if(pct<100){ state.hitGoal=false; }
-  localStorage.setItem('drink.v11', JSON.stringify(state));
+  localStorage.setItem('drink.v12', JSON.stringify(state));
 }
 
-/* Huge confetti full screen */
+/* Confetti ענק על כל המסך */
 function confettiBurstTop(){
   const ctx=confettiTop.getContext('2d');
   confettiTop.width=innerWidth; confettiTop.height=innerHeight;
-  const N=320;
+  const N=360;
   const parts=Array.from({length:N},()=>({
     x:Math.random()*confettiTop.width, y:confettiTop.height+Math.random()*30,
-    vx:(Math.random()-0.5)*3.8, vy:-(3+Math.random()*6),
-    s:2+Math.random()*5, r:Math.random()*Math.PI, vr:(Math.random()-0.5)*0.3,
+    vx:(Math.random()-0.5)*4, vy:-(3.2+Math.random()*6),
+    s:2+Math.random()*5, r:Math.random()*Math.PI, vr:(Math.random()-0.5)*0.35,
     c:`hsl(${190+Math.random()*120} 95% ${55+Math.random()*20}%)`, a:1
   }));
   let t=0; (function tick(){
@@ -116,11 +115,11 @@ function confettiBurstTop(){
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
       ctx.fillRect(-p.s/2,-p.s,p.s,p.s*2); ctx.restore();
     }
-    t++; if(t<360) requestAnimationFrame(tick); else ctx.clearRect(0,0,confettiTop.width,confettiTop.height);
+    t++; if(t<380) requestAnimationFrame(tick); else ctx.clearRect(0,0,confettiTop.width,confettiTop.height);
   })();
 }
 
-/* Notifications */
+/* התראות */
 async function ensurePermission(){ if(!('Notification'in window)) return false; if(Notification.permission==='granted') return true; if(Notification.permission!=='denied'){ const r=await Notification.requestPermission(); return r==='granted'; } return false; }
 function ping(title='תזכורת שתייה'){ const left=Math.max(0,(state.targetMl||0)-(state.intakeMl||0)); const body=left>0?`זמן שלוק. נותרו ~${Math.round(left/250)*250} מ״ל ליעד.`:'היעד היומי הושג! 💧'; if('Notification'in window && Notification.permission==='granted'){ new Notification(title,{body}); } if(playSound?.checked) playDing(); if(vibrate?.checked && navigator.vibrate) navigator.vibrate([40,60,40]); }
 let timer=null;
@@ -128,10 +127,10 @@ startRem.addEventListener('click', async()=>{ const ok=await ensurePermission();
 stopRem.addEventListener('click', ()=>{ clearInterval(timer); timer=null; });
 testPing.addEventListener('click', ()=> ping('בדיקת תזכורת'));
 
-/* One-shot alarm minutes options */
+/* דקות להתראה חד־פעמית */
 (function fillAlarm(){const frag=document.createDocumentFragment(); for(let m=1;m<=180;m++){const o=document.createElement('option'); o.value=String(m); o.textContent=o.value; frag.appendChild(o);} alarmMin.appendChild(frag);})();
 
-/* Modals with auto-close on pick */
+/* בוני צ'יפים (סגירה אוטומטית) */
 function buildChips(c,vals,onPick,fmt=v=>String(v),modalEl){
   c.innerHTML='';
   vals.forEach(v=>{
@@ -152,7 +151,7 @@ function buildHeight(){ buildChips(heightChips,[150,155,160,165,170,175,180,185,
 function buildCoffee(){ buildChips(coffeeChips,[0,1,2,3,4,5,6,7,8],c=>{ state.coffeeMl=c*240; onAnyChange(); },v=>`${v} כוס${v===1?'':'ות'}`, coffeeModal); }
 function buildAltitude(){ buildChips(altitudeChips,['רגיל','1000–2000 מ׳','2000+ מ׳'],i=>{ state.altitudeCat=i; onAnyChange(); },v=>`${v}`, altitudeModal); }
 
-/* Open/close modals */
+/* פתיחה/סגירה של מודלים */
 openWeight.addEventListener('click', ()=>{ weightModal.hidden=false; buildWeight(); });
 closeWeight.addEventListener('click', ()=> weightModal.hidden=true);
 openAge.addEventListener('click', ()=>{ ageModal.hidden=false; buildAge(); });
@@ -165,7 +164,7 @@ setCoffeeMl.addEventListener('click', e=>{ e.preventDefault(); state.coffeeMl=Ma
 openAltitude.addEventListener('click', ()=>{ altitudeModal.hidden=false; buildAltitude(); });
 closeAltitude.addEventListener('click', ()=> altitudeModal.hidden=true);
 
-/* Steppers */
+/* סטפרים */
 wPlus.addEventListener('click', ()=>{ weight.value=(+weight.value||0)+0.5; onAnyChange(); });
 wMinus.addEventListener('click', ()=>{ weight.value=Math.max(0,(+weight.value||0)-0.5); onAnyChange(); });
 aPlus.addEventListener('click', ()=>{ age.value=(+age.value||0)+1; onAnyChange(); });
@@ -173,17 +172,16 @@ aMinus.addEventListener('click', ()=>{ age.value=Math.max(0,(+age.value||0)-1); 
 hPlus.addEventListener('click', ()=>{ height.value=(+height.value||0)+1; onAnyChange(); });
 hMinus.addEventListener('click', ()=>{ height.value=Math.max(0,(+height.value||0)-1); onAnyChange(); });
 
-/* Intake controls */
+/* שליטה בצריכה */
 [add250,add500,add1000].forEach(b=> b.addEventListener('click', e=>{
   e.preventDefault();
   const inc=b===add250?250:(b===add500?500:1000);
   state.intakeMl = clamp((state.intakeMl||0)+inc, 0, 25000);
-  range.value=state.intakeMl; onAnyChange();
+  onAnyChange();
 }));
-resetBtn.addEventListener('click', e=>{ e.preventDefault(); state.intakeMl=0; range.value=0; onAnyChange(); });
-range.addEventListener('input', ()=>{ state.intakeMl=+range.value||0; onAnyChange(); });
+resetBtn.addEventListener('click', e=>{ e.preventDefault(); state.intakeMl=0; onAnyChange(); });
 
-/* Re-render on inputs */
+/* שינויי קלט => רנדר */
 [sex,isHot,preg,lact,activeMin,age,height,weight].forEach(el=> el.addEventListener('change', onAnyChange));
 form.addEventListener('submit', e=>{ e.preventDefault(); state.intakeMl??=0; onAnyChange(); });
 
@@ -191,7 +189,7 @@ function onAnyChange(){ render(); }
 
 function askForTomorrow(){ if(confirm('היעד הושג! לקבוע יעד גם למחר או תזכורת מאוחרת יותר?')){ if(!alarmMin.value) alarmMin.value='60'; startAlarm.click(); } }
 
-/* Notifications: one-shot */
+/* התראה חד־פעמית */
 let alarmHandle=null;
 startAlarm.addEventListener('click', async()=>{ const ok=await ensurePermission(); if(!ok) alert('נא לאשר התראות.'); const m=+alarmMin.value||1; if(alarmHandle) clearTimeout(alarmHandle); alarmHandle=setTimeout(()=>ping('⏰ התראת שתייה'), m*60*1000); ping('⏳ ההתראה הופעלה'); });
 cancelAlarm.addEventListener('click', ()=>{ if(alarmHandle){ clearTimeout(alarmHandle); alarmHandle=null; } ping('ההתראה בוטלה'); });
@@ -201,8 +199,5 @@ cancelAlarm.addEventListener('click', ()=>{ if(alarmHandle){ clearTimeout(alarmH
   if(!weight.value) weight.value=70;
   if(!age.value) age.value=26;
   if(!height.value) height.value=170;
-  if(state.intakeMl) range.value=state.intakeMl;
-  // minutes select for activity already in HTML
-  // fill alarm options done earlier
   render();
 })();
