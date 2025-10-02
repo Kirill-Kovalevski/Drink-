@@ -1,0 +1,125 @@
+/* ===== דרינק! — רספונסיביות מדויקת, Ripples Edge, Capsule Progress ===== */
+:root{
+  --ink:#0b132b; --foam:#f7fbff;
+  --sea-0:#e6f3ff; --sea-1:#cfe8ff; --sea-2:#9cd1ff; --sea-3:#5fb9ff; --sea-4:#2aa1ff;
+  --accent:#6f5bf0; --good:#00a389; --warn:#ffb020; --danger:#e24d4d;
+  --radius:18px; --shadow:0 20px 60px rgba(0,40,120,.12);
+  --river-hue:205; /* מתעדכן לפי התקדמות */
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:"Rubik",system-ui,"Segoe UI",Arial,sans-serif; color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 100% -10%, #ffffffaa, transparent 60%),
+    linear-gradient(180deg, var(--sea-0), var(--sea-1));
+  overflow-x:hidden; direction:rtl;
+}
+
+/* ===== Header ===== */
+.o-header{padding:calc(28px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left))}
+.hdr-inner{max-width:1100px; margin-inline:auto; position:relative}
+
+.hero-title{position:relative; text-align:right; z-index:3}
+.brand-he{
+  margin:0;
+  font:900 clamp(50px, 6.5vw, 98px)/0.95 "Frank Ruhl Libre",serif;
+  background:linear-gradient(180deg,#0e1930,#1e40af 40%,#22d3ee 95%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 2px 0 #fff8,0 8px 18px rgba(34,211,238,.28),0 16px 36px rgba(111,91,240,.24);
+}
+.brand-sub{margin:.35rem 0 0; font:600 clamp(16px,1.6vw,26px)/1 "Rubik"; color:#183a63; opacity:.9}
+
+/* Ripples Edge-to-Edge */
+.ripple-hero{position:relative; margin-top:16px; margin-bottom:24px; height:120px; border-radius:16px; overflow:hidden; box-shadow:0 18px 40px rgba(42,161,255,.2)}
+.ripple-hero.edge{ margin-inline:calc(50% - 50vw); width:100vw; padding-inline: env(safe-area-inset-left) env(safe-area-inset-right) }
+.ripple-hero canvas{display:block; width:100%; height:100%}
+
+/* ציטוט */
+.quote{display:inline-block; padding:16px 18px; border-radius:14px; background:linear-gradient(180deg,#ffffffcc,#e9f4ff); border:1px solid #d6e9ff; box-shadow:0 10px 30px rgba(42,161,255,.18)}
+
+/* ===== Layout ===== */
+.o-main{
+  max-width:1100px; margin:8px auto 70px; padding:0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+  display:grid; gap:24px; grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+}
+.card{
+  background:radial-gradient(80% 60% at 100% -20%,rgba(255,255,255,.9),transparent 40%), linear-gradient(180deg,#fff,var(--sea-0));
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:24px; border:1px solid rgba(42,161,255,.15);
+  transition:transform .25s, box-shadow .35s, border-color .3s;
+}
+.card:hover{transform:translateY(-2px); box-shadow:0 30px 70px rgba(42,161,255,.18)}
+.card-title{margin:0 0 12px; font-weight:900; letter-spacing:.02em}
+
+/* ===== Form ===== */
+.grid{display:grid; gap:12px; min-width:0}
+.row{display:flex; align-items:center; gap:10px; min-width:0; flex-wrap:wrap}
+label{display:flex; flex-direction:column; gap:6px; font-weight:800}
+input,select,button{font:inherit}
+input[type="number"], select{border:1px solid #cfe0ff; background:#fff; padding:10px 12px; border-radius:12px; min-height:44px}
+
+/* סיומת בתוך שדה הגובה */
+.input-suffix{position:relative; flex:1}
+.input-suffix input{width:100%; padding-inline-end:48px}
+.input-suffix .suffix{position:absolute; inset-inline-end:10px; inset-block:0; display:grid; place-items:center; font-weight:800; opacity:.75}
+
+/* צ׳קבוקסים — טקסט קרוב יותר */
+.one-line{gap:14px}
+.one-line .spacer{flex:1}
+.check{display:inline-flex; align-items:center; gap:6px; font-weight:700; line-height:1}
+.check > input{appearance:none; inline-size:18px; block-size:18px; border-radius:6px; border:2px solid #b9d6ff; background:#fff; display:grid; place-items:center; transition:border-color .2s, background .2s, box-shadow .2s}
+.check > input::after{content:""; inline-size:10px; block-size:10px; border-radius:2px; transform:scale(0); background:var(--sea-4); transition:transform .18s cubic-bezier(.2,.7,.3,1.4)}
+.check > input:checked{border-color:var(--sea-4); box-shadow:inset 0 0 0 2px #fff}
+.check > input:checked::after{transform:scale(1)}
+/* השורה של צליל/רטט – יותר ריווח לפני הכפתורים שמתחת */
+.tiny{min-inline-size:120px; padding:10px 14px}
+.checks.tight{margin-bottom:6px}
+.btn-row.bump{margin-top:8px}
+
+/* כפתורים */
+.btn{border:none; border-radius:14px; padding:12px 16px; cursor:pointer; transition:transform .15s, box-shadow .3s, filter .25s; background:linear-gradient(180deg,var(--sea-3),var(--sea-4)); color:white; box-shadow:0 8px 24px rgba(42,161,255,.35); min-inline-size:156px; flex:0 1 156px; font-weight:800; letter-spacing:.02em; position:relative; text-align:center}
+.btn.equal{flex:1 1 0}
+.btn.primary{background:linear-gradient(180deg,#67e8f9,#22d3ee); color:#032b36}
+.btn.danger{background:linear-gradient(180deg,#ff8a8a,#e24d4d)}
+.btn.ghost{background:#fff; color:var(--ink); border:1px solid #cfe0ff; box-shadow:none}
+
+/* ===== Progress (Capsule) ===== */
+.progress{margin-top:12px; position:relative; overflow:hidden}
+.progress-head{display:flex; justify-content:space-between; align-items:center; gap:12px}
+.progress.edge .progress-bar{ margin-inline:calc(50% - 50vw); inline-size:100vw; padding-inline:env(safe-area-inset-left) env(safe-area-inset-right) }
+
+.progress-bar.capsule{
+  height:30px; border-radius:999px; background:#0e1b2a;
+  border:1px solid rgba(22,58,116,.35); overflow:hidden; position:relative;
+  box-shadow: inset 0 6px 12px rgba(0,0,0,.35), 0 10px 30px rgba(42,161,255,.18);
+}
+.fill{
+  height:100%; width:0%; position:relative; overflow:hidden;
+  background:linear-gradient(90deg, hsl(var(--river-hue) 90% 70%), hsl(calc(var(--river-hue) - 12) 90% 60%) 60%, hsl(calc(var(--river-hue) - 28) 85% 52%) 100%);
+  transition:width .65s cubic-bezier(.22,1,.36,1), filter .3s;
+}
+.fill::before{content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.7) 25%, transparent 55%); mix-blend-mode:screen; animation:sheen 2.2s linear infinite}
+@keyframes sheen{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+/* הטיפה – לפי אחוז ההתקדמות (ללא אנימציה מחזורית) */
+.droplet{position:absolute; top:50%; transform:translate(-50%,-50%); inset-inline-start:calc(var(--pct,0)*1%); width:22px; height:22px; border-radius:50% 50% 55% 55%/60% 60% 40% 40%; background:radial-gradient(circle at 30% 30%,#fff,#b9e2ff); box-shadow:0 8px 20px rgba(42,161,255,.35)}
+#bubbles{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+.confetti{position:absolute; inset:-10px -10px auto -10px; height:140px; pointer-events:none}
+
+/* סלאידר */
+input[type="range"]{width:100%; accent-color:hsl(var(--river-hue) 90% 55%)}
+input[type="range"]::-webkit-slider-runnable-track{height:6px; border-radius:999px; background:linear-gradient(90deg,#d7e9ff,#cfe3ff)}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none; margin-top:-7px; inline-size:20px; block-size:20px; border-radius:50%; background:radial-gradient(circle at 30% 30%,#fff,#bfe2ff); box-shadow:0 4px 10px rgba(42,161,255,.35); border:1px solid #96caff}
+
+/* רספונסיביות — iPhone 12 Pro ומעלה */
+@media (max-width:414px){
+  .o-main{grid-template-columns:1fr; gap:18px}
+  .card{padding:20px}
+  .btn{min-inline-size:148px}
+  .ripple-hero{height:110px}
+}
+@media (min-width:1200px){
+  .o-main{grid-template-columns:repeat(2,minmax(420px,1fr)); gap:28px}
+  .card{padding:30px}
+}
