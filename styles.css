@@ -1,257 +1,129 @@
-/* ===== דרינק! — RTL + Wave Fullscreen + Galleon Title + Perfect Layout ===== */
 :root{
-  --ink:#0b132b; --foam:#f7fbff;
-  --sea-0:#e6f3ff; --sea-1:#cfe8ff; --sea-2:#9cd1ff; --sea-3:#5fb9ff; --sea-4:#2aa1ff;
-  --accent:#6f5bf0; --good:#00a389; --warn:#ffb020; --danger:#e24d4d;
-  --radius:18px; --shadow:0 20px 60px rgba(0,40,120,.12);
-  --river-hue:205;
-  --ctrl-h:46px; --ctrl-r:12px; --btn-min:200px; --icon-btn-s:36px; --icon-s:16px;
+  --ink:#0b1d33; --muted:#6b7a90; --card:#fff;
+  --brand:#22d3ee; --brand2:#1e40af; --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+  --shadow:0 20px 50px rgba(15,66,142,.12);
+  --radius:18px; --spin-h:56px; --btn-w:56px;
 }
 *{box-sizing:border-box} html,body{height:100%}
-body{
-  margin:0; direction:rtl; color:var(--ink);
-  font-family:"Rubik",system-ui,"Segoe UI",Arial,sans-serif;
-  background: radial-gradient(1200px 600px at 100% -10%, #ffffffaa, transparent 60%), linear-gradient(180deg, var(--sea-0), var(--sea-1));
-  overflow-x:hidden;
+body{margin:0;padding-bottom: 2rem; font-family:"Rubik",system-ui,Arial,Helvetica,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,#eaf4ff,#f7fbff 60%,#eef6ff);overflow-x:hidden}
+
+/* ===== HERO ===== */
+.hero.edge{width:100vw;margin-inline:calc(50% - 50vw);position:relative;background:linear-gradient(180deg,#eaf6ff,#ffffff 65%);border-radius:0 0 24px 24px;box-shadow:var(--shadow)}
+.hero-compact{height:min(22vh,200px);max-height:210px}
+.hero-waves{position:absolute;inset:auto 0 0 0;height:58%;width:100%}
+.ship-wrap{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;pointer-events:none}
+.real-ship{width:min(92vw,720px);height:100%;transform-origin:50% 100%}
+
+/* ===== QUOTE ===== */
+.quote{margin:10px auto 18px;width:clamp(320px,94vw,820px);background:#fff;border-radius:999px;box-shadow:var(--shadow);
+  padding:10px 16px;text-align:center;color:#1d3357}
+
+/* ===== APP WRAP ===== */
+.app{width:clamp(320px,94vw,820px);margin:0 auto 64px;padding-inline:12px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin:14px 0; margin: bottom 3rem;}
+.card-title{margin:4px 2px 12px;font:900 22px "Rubik"}
+
+/* ===== PROGRESS ===== */
+.topbar{text-align:center;color:var(--muted);font-weight:600}
+.gauge-wrap{display:grid;place-items:center;margin:8px 0 14px}
+.gauge{--size:184px;width:var(--size);height:var(--size);border-radius:50%;position:relative;background:conic-gradient(#22d3ee 0,#e6eef7 0 360deg);display:grid;place-items:center;filter:drop-shadow(0 14px 26px rgba(34,139,230,.25))}
+.gauge-fill{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#22d3ee 0,#e6eef7 0 360deg);transition:background .3s ease}
+.gauge::after{content:"";position:absolute;inset:12px;background:linear-gradient(180deg,#fff,#f3f7ff);border-radius:50%;box-shadow:inset 0 0 0 1px #e8eef6}
+.gauge-cover{position:absolute;inset:0;display:grid;place-items:center;gap:6px;text-align:center}
+.water-title{font:900 clamp(28px,7vw,46px)/1 "Frank Ruhl Libre",serif;background:linear-gradient(180deg,#25426b,#1e40af 40%,#22d3ee 92%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 14px rgba(34,211,238,.35);animation:hue 8s linear infinite, glowPulse 3.5s ease-in-out infinite}
+.water-title.small{font-size:clamp(20px,6vw,34px)}
+@keyframes hue{to{filter:hue-rotate(360deg)}}
+@keyframes glowPulse{0%,100%{text-shadow:0 2px 14px rgba(34,211,238,.35)}50%{text-shadow:0 2px 22px rgba(34,211,238,.8)}}
+
+/* ring splash */
+.ring-splash{position:absolute;inset:0;margin:auto;border-radius:50%;pointer-events:none;transform:scale(0);opacity:0}
+.ring-splash.show{animation:ringSplash .9s ease-out}
+@keyframes ringSplash{
+  0%{transform:scale(var(--pulse-scale,1));opacity:.55;box-shadow:0 0 0 10px hsla(var(--ring-hue,190),90%,60%,.45), inset 0 0 22px hsla(var(--ring-hue,190),95%,70%,.65)}
+  60%{opacity:.25}
+  100%{transform:scale(calc(var(--pulse-scale,1)*1.25));opacity:0}
 }
 
-/* ========== Header: Full-screen wave ========== */
-.o-header{padding:0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left))}
-.ripple-hero{position:relative; height:120px; border-radius:0 0 24px 24px; overflow:hidden; box-shadow:0 18px 40px rgba(42,161,255,.2); margin-bottom:10px}
-.ripple-hero.edge{ margin-inline:calc(50% - 50vw); width:100vw; padding-inline: env(safe-area-inset-left) env(safe-area-inset-right) }
-.ripple-hero canvas{display:block; width:100%; height:100%}
-.hero-full{ height: calc(100dvh - 24px); }
-@media (min-width:860px){ .hero-full{ height: 52vh; } }
+/* river */
+.river{height:16px;background:#e9f3ff;border-radius:999px;overflow:hidden;margin:2px 0 14px}
+.river-fill{height:100%;width:0%;transition:width .45s cubic-bezier(.2,.8,.2,1);box-shadow:inset 0 0 24px rgba(255,255,255,.35)}
+.stripes{background-image:linear-gradient(90deg,rgba(255,255,255,.35) 25%,rgba(255,255,255,0) 25% 50%,rgba(255,255,255,.35) 50% 75%,rgba(255,255,255,0) 75%);background-size:40px 100%;animation:flow 1.1s linear infinite}
+@keyframes flow{from{background-position:0 0}to{background-position:-40px 0}}
+.stage1{background-color:#55c9ff}.stage2{background-color:#34b3ff}.stage3{background-color:#1aa1ff}.stage4{background-color:#10b981}
 
-.hero-overlay{position:absolute; inset:0; display:flex; align-items:flex-start; justify-content:flex-end; pointer-events:none; padding: max(12px, env(safe-area-inset-top)) 20px 0 20px}
-.hero-overlay.left{justify-content:flex-start}
+/* buttons */
+.btn-row{display:grid;gap:10px;margin-top:8px}.btn-row.grid-3{grid-template-columns:repeat(3,1fr)}
+.btn{height:48px;border:none;border-radius:14px;background:#eef6ff;color:#0c2242;font-weight:800;box-shadow:inset 0 0 0 1px #d7e6fb}
+.btn.primary{background:linear-gradient(90deg,#5ac8ff,#2fb2ff);color:#fff;box-shadow:0 10px 18px rgba(47,178,255,.25)}
+.btn.danger{background:linear-gradient(90deg,#ff6b6b,#f43f5e);color:#fff}
+.btn.equal{width:100%}
 
-/* ===== Galleon (ספינת מפרשים חדשה) ===== */
-.galleon{ position:relative; pointer-events:auto; width:min(620px,70vw); height:190px; filter: drop-shadow(0 18px 38px rgba(0,0,0,.15)); }
-.g-hull{
-  position:absolute; bottom:0; left:0; right:0; height:84px;
-  background: linear-gradient(180deg, #123055, #0c213d);
-  border-radius: 40px 40px 20px 20px / 52px 52px 20px 20px;
-  box-shadow: inset 0 6px 14px rgba(255,255,255,.12), inset 0 -14px 26px rgba(0,0,0,.35);
-}
-.g-stern{ position:absolute; bottom:52px; right:-12px; width:120px; height:70px; border-radius: 24px; background:linear-gradient(180deg,#173d6d,#0d2544); box-shadow: inset 0 6px 12px rgba(255,255,255,.18)}
-.g-prow{ position:absolute; bottom:42px; left:-18px; width:88px; height:44px; border-radius: 0 0 44px 44px; background: linear-gradient(180deg,#123055,#0c213d); transform: rotate(10deg) }
-.g-mast{ position:absolute; bottom:92px; left:48%; width:10px; height:140px; background:linear-gradient(180deg,#815736,#5a391f); border-radius:8px }
-.g-sail{ position:absolute; top:10px; left:50%; width:160px; height:74px; background:linear-gradient(180deg,#fffffff0,#ecf6ffcc); border:1px solid #d8eaff; border-radius:22px 8px 22px 8px; transform-origin:left center; backdrop-filter: blur(2px)}
-.g-sail-a{ transform: skewX(-12deg) rotate(4deg) translateX(8px) }
-.g-sail-b{ top:70px; height:66px; transform: skewX(-10deg) rotate(1deg) translateX(-4px) }
-.g-flag{ position:absolute; top:0; left:calc(50% + 4px); width:48px; height:18px; background:linear-gradient(90deg,#22d3ee,#60a5fa); border-radius:0 12px 12px 0; transform:skewX(-15deg); box-shadow:0 6px 12px rgba(0,0,0,.18)}
-.g-portholes{ position:absolute; bottom:18px; left:22px; display:flex; gap:10px }
-.g-portholes span{ width:12px; height:12px; border-radius:50%; background:#93c5fd; box-shadow:inset 0 0 0 2px #e6f3ff; opacity:.9 }
+/* reading line */
+.reading-row{display:flex;justify-content:center;gap:12px;align-items:center;margin:12px 0 2px}
+.reading-title{font-weight:900;color:#153157}
+.reading-line{display:flex;align-items:center;gap:8px;font-size:18px}
+.reading-line .num.glow{font-weight:900;animation:readGlow 3s ease-in-out infinite}
+@keyframes readGlow{0%,100%{color:#0b1d33;text-shadow:0 0 0 transparent}50%{color:#084c82;text-shadow:0 0 12px rgba(96,165,250,.55)}}
+.reading-line .sep{opacity:.5;margin-inline:6px}
 
-.g-title{
-  position:absolute; bottom:16px; right:18px; text-align:right;
-  padding:10px 14px; border-radius:14px;
-  background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.55));
-  border:1px solid rgba(255,255,255,.75); backdrop-filter: blur(6px) saturate(130%);
-}
-.brand-he{
-  margin:0; font:900 clamp(38px,5.6vw,78px)/0.95 "Frank Ruhl Libre",serif;
-  background:linear-gradient(180deg,#0e1930,#1e40af 45%,#22d3ee 95%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  text-shadow:0 2px 0 #fff8,0 10px 18px rgba(34,211,238,.24);
-}
-.brand-sub{margin:2px 2px 0 0; font:700 clamp(12px,1.5vw,18px)/1 "Rubik"; color:#0f2c4a; opacity:.85}
+/* ===== FORM ===== */
+.lbl{display:block;margin:12px 0 6px;font-weight:800;color:#1b3152}
 
-/* Quote */
-.quote{display:inline-block; margin:10px 16px 12px; padding:12px 14px; border-radius:14px; background:linear-gradient(180deg,#ffffffcc,#e9f4ff); border:1px solid #d6e9ff; box-shadow:0 10px 30px rgba(42,161,255,.18)}
+/* Select (RTL, arrow on left), suffix inside */
+.nice-select{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  width:100%;height:52px;border-radius:14px;border:1px solid #d7e6fb;background:#fff;
+  padding-inline:0;color:#0c2242;font-weight:800;appearance:none;direction:rtl;text-align:right;text-align-last:right;
+  background-image:linear-gradient(45deg,transparent 50%,#7aa7d9 50%),linear-gradient(135deg,#7aa7d9 50%,transparent 50%);
+  background-position:left 20px center, left 15px center;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+.select-suffix{position:relative}
+.select-suffix .suffix{pointer-events:none;position:absolute;display:flex;align-items:center;color:#6b7a90;font-weight:800}
+.select-suffix.rtl-right .suffix{right:16px;top:0;bottom:0}
+.select-suffix.suffix-after .suffix{left:16px;top:0;bottom:0}
 
-/* Confetti canvas full-screen */
-.confetti-top{position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:999;}
+/* spinner rows – all identical sizing */
+.spin-row{display:grid;grid-template-columns:160px 1fr auto;align-items:center;gap:12px;margin:10px 0}
+.spin-label{font-weight:800;color:#1b3152;white-space:nowrap}
+.spinner{display:grid;grid-template-columns:var(--btn-w) 1fr var(--btn-w);height:var(--spin-h);border:1px solid #d7e6fb;border-radius:16px;background:#fff;overflow:hidden}
+.step{width:var(--btn-w);height:var(--spin-h);display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#f8fbff,#e9f2ff);border:none;font:900 24px "Rubik";color:#1f4b7c}
+.spin-val{display: flex; align-items: center; justify-content: center; line-height:var(--spin-h);text-align:center;font:900 20px "Rubik";color:#0c2242}
+.chip-open{height:var(--spin-h);padding:0 14px;border-radius:14px;border:1px dashed #cfe3ff;background:#f7fbff;color:#1e3a8a;font-weight:800}
 
-/* ========== Layout cards ========== */
-.o-main{max-width:1100px; margin:8px auto 70px; padding:0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); display:grid; gap:24px; grid-template-columns:repeat(auto-fit,minmax(360px,1fr))}
-.card{background:radial-gradient(80% 60% at 100% -20%,rgba(255,255,255,.9),transparent 40%),linear-gradient(180deg,#fff,var(--sea-0)); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px; border:1px solid rgba(42,161,255,.15)}
-.card-title{margin:0 0 10px; font-weight:900}
+/* icon grid (instead of tick boxes) */
+.icon-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+.icon-tile{height:72px;border-radius:14px;border:1px solid #d7e6fb;background:#fff;display:grid;place-items:center;gap:6px;font-weight:800;color:#173a59}
+.icon-tile.active{box-shadow:0 0 0 2px #3ab0ff inset}
+.icon-tile .i{width:22px;height:22px;display:inline-block;border-radius:6px}
+.i.sun{background:radial-gradient(circle at 30% 30%,#ffd86b,#ffb703)}
+.i.bottle{background:linear-gradient(180deg,#dff2ff,#b8e1ff)}
+.i.heart{background:radial-gradient(circle at 40% 40%,#ff9eb1,#f43f5e)}
+.i.mountain{background:linear-gradient(180deg,#c7d2fe,#93c5fd)}
+.i.mug{background:linear-gradient(180deg,#e5ecff,#cfe0ff)}
 
-/* ===== Form ===== */
-.grid{display:grid; gap:10px} .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-label{display:flex; flex-direction:column; gap:6px; font-weight:800}
-input,select,button{font:inherit}
+/* CTA & target */
+.cta{margin-top:12px;width:100%;height:52px;border:none;border-radius:14px;background:linear-gradient(90deg,#2fb2ff,#1e90ff);color:#fff;font-weight:900;box-shadow:0 14px 28px rgba(47,144,255,.25)}
+.target{text-align:center;margin-top:10px;color:#1d3357;font-weight:800}
 
-/* מסירים חיצים משדות מספריים ונותנים יישור מלא */
-input[type="number"]{border:1px solid #cfe0ff; background:#fff; padding:10px 12px; border-radius:12px; min-height:var(--ctrl-h); -moz-appearance:textfield}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
+/* ===== REMINDERS ===== */
+.rem-grid{display:grid;grid-template-columns:1fr;gap:14px;align-items:end}
+.btn-stack{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 
-/* תבנית של שלושת השורות — אותו גריד */
-.metric-row{
-  display:grid;
-  grid-template-columns: minmax(var(--btn-min),1fr) 1fr;
-  gap:12px;
-  align-items:center;
-}
-.metric-row .stepper{
-  display:grid; grid-template-columns:46px 1fr 46px; gap:10px; align-items:center;
-}
-.step{width:46px; height:46px; border-radius:12px; border:1px solid #cfe0ff; background:#fff; cursor:pointer; font-weight:900}
+/* ===== MODALS ===== */
+.modal[hidden]{display:none}.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center}
+.modal-backdrop{position:absolute;inset:0;background:#0b1d33cc;backdrop-filter:blur(6px)}
+.modal-card{position:relative;background:#fff;border-radius:18px;box-shadow:var(--shadow);width:min(92vw,560px);padding:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips button{border:none;padding:10px 14px;border-radius:999px;background:#f0f7ff;box-shadow:inset 0 0 0 1px #d8e6f8;font-weight:800}
+.row{display:flex;gap:10px;justify-content:center;margin-top:10px}
 
-/* Select עם חץ מותאם + ריווח (הטקסט לא נוגע בחץ) */
-.nice-select{ appearance:none; border:1px solid #cfe0ff; background:#fff; padding:10px 42px 10px 12px; border-radius:12px; min-height:var(--ctrl-h);
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%2360a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
-  background-repeat:no-repeat; background-position: 12px center;
-}
-.select-suffix{position:relative; display:flex; align-items:center}
-.select-suffix .with-suffix{width:100%}
-.select-suffix .suffix{position:absolute; inset-inline-end:12px; pointer-events:none; color:#0f2c4a; opacity:.8; font-weight:800}
+/* ===== CONFETTI ===== */
+.confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:80}
 
-/* Checkboxes compact */
-.one-line{gap:10px} .one-line .spacer{flex:1}
-.check{display:inline-flex; align-items:center; gap:6px; font-weight:800}
-.check>input{appearance:none; width:18px; height:18px; border-radius:6px; border:2px solid #b9d6ff; background:#fff; display:grid; place-items:center; transition:border-color .2s, background .2s, box-shadow .2s}
-.check>input::after{content:""; width:10px; height:10px; border-radius:2px; transform:scale(0); background:var(--sea-4); transition:transform .18s cubic-bezier(.2,.7,.3,1.4)}
-.check>input:checked{border-color:var(--sea-4); box-shadow:inset 0 0 0 2px #fff}
-.check>input:checked::after{transform:scale(1)}
-
-/* Icons small & round */
-.btn.icon-btn{width:var(--icon-btn-s); height:var(--icon-btn-s); min-inline-size:var(--icon-btn-s); padding:8px; border-radius:999px; border:1px solid #cfe0ff; background:radial-gradient(160% 150% at 0% 100%,#fff,#eef6ff); box-shadow:0 6px 14px rgba(42,161,255,.2), inset 0 0 0 1px #fff}
-.btn.icon-btn .icon{width:var(--icon-s); height:var(--icon-s); display:block; filter:drop-shadow(0 1px 1px rgba(0,0,0,.05))}
-.btn.icon-btn:hover{box-shadow:0 10px 22px rgba(42,161,255,.26), inset 0 0 0 1px #fff}
-.btn.icon-btn:active{transform:translateY(1px)}
-
-/* Buttons equal & airy */
-.btn{border:none; border-radius:14px; padding:12px 16px; cursor:pointer; transition:transform .15s, box-shadow .3s, filter .25s; background:linear-gradient(180deg,var(--sea-3),var(--sea-4)); color:white; box-shadow:0 8px 24px rgba(42,161,255,.35); min-inline-size:var(--btn-min); height:var(--ctrl-h); font-weight:800}
-.btn.equal{flex:1 1 0; min-inline-size:var(--btn-min)}
-.btn.primary{background:linear-gradient(180deg,#67e8f9,#22d3ee); color:#032b36}
-.btn.danger{background:linear-gradient(180deg,#ff8a8a,#e24d4d)}
-.btn.ghost{background:#fff; color:var(--ink); border:1px solid #cfe0ff; box-shadow:none}
-.btn-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(var(--btn-min),1fr)); gap:16px; align-items:stretch}
-.btn-row.roomy{margin-block:16px}
-
-/* Progress river */
-.progress{margin-top:12px; position:relative; overflow:hidden}
-.progress-head{display:flex; justify-content:space-between; align-items:center; gap:12px}
-.progress.edge .progress-bar{ margin-inline:calc(50% - 50vw); width:100vw; padding-inline:env(safe-area-inset-left) env(safe-area-inset-right) }
-.progress-bar.capsule{height:32px; border-radius:999px; background:#0e1b2a; border:1px solid rgba(22,58,116,.35); overflow:hidden; position:relative; box-shadow:inset 0 6px 12px rgba(0,0,0,.35), 0 10px 30px rgba(42,161,255,.18)}
-.fill{height:100%; width:0%; position:relative; overflow:hidden; background:linear-gradient(90deg,#7dd3fc,#38bdf8 60%,#60a5fa 100%); background-size:180% 100%; animation:flow 8s linear infinite; transition:width .6s cubic-bezier(.22,1,.36,1)}
-.fill.stage2{background-image:linear-gradient(90deg,#34d399,#22d3ee 60%,#60a5fa 100%)}
-.fill.stage3{background-image:linear-gradient(90deg,#60a5fa,#7c3aed 60%,#a78bfa 100%)}
-@keyframes flow{from{background-position:0% 50%}to{background-position:100% 50%}}
-.droplet{position:absolute; top:50%; transform:translate(-50%,-50%); inset-inline-start:calc(var(--pct,0)*1%); width:22px; height:22px; border-radius:50% 50% 55% 55%/60% 60% 40% 40%; background:radial-gradient(circle at 30% 30%,#fff,#b9e2ff); box-shadow:0 8px 20px rgba(42,161,255,.35)}
-#bubbles{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
-
-/* יעד ממורכז + שימר */
-.totals{display:flex; justify-content:center; margin:8px 0 6px}
-.total-item{display:flex; align-items:center; gap:10px; font-size:1.06rem; font-weight:900;}
-.total-item .num{ background:linear-gradient(180deg,#0e1930,#1e40af 45%,#22d3ee 95%); -webkit-background-clip:text; background-clip:text; color:transparent }
-.shimmer{position:relative; overflow:hidden}
-.shimmer::after{
-  content:""; position:absolute; inset:0; transform:translateX(-120%);
-  background:linear-gradient(120deg, transparent 10%, rgba(255,255,255,.85) 35%, transparent 60%);
-  animation:shine 2.4s infinite;
-}
-@keyframes shine{ 0%{transform:translateX(-120%)} 60%{transform:translateX(120%)} 100%{transform:translateX(120%)} }
-
-/* Modals — מסך מלא ומרוכזים */
-.modal[hidden]{display:none!important}
-.modal{position:fixed!important; inset:0!important; width:100dvw!important; height:100dvh!important; z-index:9999!important; display:grid; place-items:center}
-.modal-backdrop{position:fixed!important; inset:0!important; width:100dvw!important; height:100dvh!important; background:linear-gradient(180deg,rgba(8,14,28,.45),rgba(8,14,28,.35)); backdrop-filter:blur(6px) saturate(120%)}
-.modal-card{position:relative; max-width:min(92vw,640px); width:min(92vw,640px); border-radius:18px; padding:16px; background:#fff; border:1px solid #dbeafe; box-shadow:0 28px 80px rgba(0,0,0,.28)}
-.chips{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px}
-.chip{height:38px; display:grid; place-items:center; border-radius:999px; border:1px solid #cfe0ff; background:#fff; font-weight:800}
-.chip.active{border-color:#22b0ff; box-shadow:0 0 0 3px rgba(34,176,255,.18)}
-
-/* Footer */
-.o-foot{display:flex; justify-content:center; padding:26px 10px; color:#1f2c45}
-.footnote{opacity:.7}
-
-/* Responsive tweaks */
-@media (max-width:414px){
-  .o-main{grid-template-columns:1fr; gap:18px}
-  .card{padding:20px}
-  .btn-row{grid-template-columns:1fr 1fr}
-}
-@media (min-width:1200px){
-  .o-main{grid-template-columns:repeat(2,minmax(420px,1fr)); gap:28px}
-  .card{padding:30px}
-}
-/* === Title as part of the hull (no container) === */
-.galleon.modern .g-title{
-  position:absolute;
-  bottom:28px;         /* מושב נמוך על הדק/גוף */
-  right:36px;
-  padding:0;
-  background:none;     /* אין קופסה */
-  border:none;
-  box-shadow:none;
-  backdrop-filter:none;
-  transform:skewX(-7deg); /* זווית קלה בהתאם לקו גוף הספינה */
-}
-
-/* הכותרת "צבועה" על המתכת – הבלטה עדינה וקריאות גבוהה */
-.galleon.modern .brand-he{
-  margin:0;
-  font:900 clamp(38px,5.6vw,78px)/0.95 "Frank Ruhl Libre",serif;
-  letter-spacing:.5px;
-  /* גוונים של צבע ימי עם תחושת צבע ספריי על המתכת */
-  background:linear-gradient(180deg,#dbe6f6 0%, #9ec2ff 48%, #5fb9ff 78%, #b8d4ff 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  /* חיתוך/הבלטה על החומר – בלי קופסה */
-  -webkit-text-stroke:0.8px rgba(12,28,48,.45);
-  text-shadow:
-     0 1px 0 #ffffffaa,       /* היילייט לבן קטן */
-     0 2px 2px rgba(5,15,30,.25),
-     0 10px 20px rgba(22,58,116,.20);
-  mix-blend-mode:multiply;    /* משתלב עם צבעי הגוף */
-}
-
-/* כיתוב משני – "מונה מים אישי" – ממוקם מעט נמוך, גם בלי רקע */
-.galleon.modern .brand-sub{
-  margin:.25rem .2rem 0 0;
-  font:800 clamp(11px,1.3vw,16px)/1 "Rubik";
-  color:#173a59;
-  opacity:.92;
-  transform:translateY(4px) skewX(-7deg);
-}
-
-/* רצועת גוון עדינה מתחת לטקסט (כמו צביעה על גוף) – לא קופסה! */
-.galleon.modern .g-title::before{
-  content:"";
-  position:absolute;
-  inset:-2px -6px -4px -6px;
-  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.08));
-  opacity:.10;          /* מאוד חלש – רק מחזק קריאות על מתכת בהירה */
-  filter:blur(.4px);
-  transform:skewX(-5deg);
-  pointer-events:none;
-}
-
-/* קו דק של "סימון צבע" מתכתי – משתלב בגוף */
-.galleon.modern .g-title::after{
-  content:"";
-  position:absolute; inset:auto 0 -8px 0; height:1.5px;
-  background:linear-gradient(90deg,#8fb3da80,transparent 70%);
-  opacity:.55;
-}
-/* ===== Mobile polish pack for the hero/wave ===== */
-@media (max-width:430px){
-  .ripple-hero.hero-full{
-    height: calc(100dvh - 6px);       /* ממלא מסך בטוח לנוטש */
-    border-radius: 0 0 24px 24px;
-  }
-  .ripple-hero{ box-shadow: 0 18px 40px rgba(42,161,255,.16) }
-  .quote{ margin: 8px 16px 12px }
-}
-/* === Mobile Hero Compact — full-bleed width, shorter height === */
-@media (max-width: 480px){
-  /* ההירו מתפרס על כל רוחב הטלפון */
-  .ripple-hero.edge{
-    margin-inline: calc(50% - 50vw) !important;
-    width: 100vw !important;
-    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
-    border-radius: 0 0 22px 22px;
-    box-shadow: 0 18px 40px rgba(42,161,255,.16);
-  }
-  /* גובה קומפקטי: ~28vh עם מינימום בטוח */
-  .ripple-hero.hero-full{
-    height: min(28vh, 260px) !important;
-    min-height: 180px;
-  }
-  /* פחות ריווח בין ההירו לציטוט/כרטיס הראשון */
-  .quote{ margin: 10px 16px 12px }
+/* ===== RESPONSIVE ===== */
+@media (max-width:520px){
+  .spin-row{grid-template-columns:auto}
+  .spin-label{font-size:14px}
+  .icon-grid{grid-template-columns:repeat(3,1fr)}
 }

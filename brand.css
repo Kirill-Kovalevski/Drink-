@@ -1,0 +1,73 @@
+:root { --brand-bob-duration: 5.6s; }
+
+/* עיגול מים מבריק בפינה הימנית־עליונה */
+.brand-badge{
+  position:fixed; top:12px; right:14px; z-index:90;
+  width:56px; height:56px; border-radius:50%;
+  background:
+    radial-gradient(140% 140% at 50% 8%, rgba(255,255,255,.85) 0 30%, rgba(255,255,255,0) 31%) #fff;
+  box-shadow:
+    0 12px 24px rgba(53,170,255,.22),
+    inset 0 0 0 3px #6aaeff,
+    inset 0 0 0 6px rgba(255,255,255,.55);
+  overflow:hidden;
+  text-decoration:none;
+  transform-origin: 50% 100%;
+  animation: bob var(--brand-bob-duration) ease-in-out infinite;
+  /* מפלס המים בלוגו (אפשר לשחק) */
+  --level: 58%;
+}
+
+/* שכבת המים */
+.brand-badge::before{
+  content:"";
+  position:absolute; left:6px; right:6px; bottom:6px; top:6px;
+  border-radius:50%;
+  background: linear-gradient(180deg,#3aa9ff 0%, #1e40af 100%);
+  clip-path: inset(calc(100% - var(--level)) 0 0 0 round 50%);
+  box-shadow: inset 0 6px 10px rgba(0,0,0,.1);
+  z-index:0;
+}
+
+/* גל מבריק ש"נשפך" מצד לצד */
+.brand-badge::after{
+  content:"";
+  position:absolute; left:-30%; right:-30%;
+  top: calc(100% - var(--level) - 6%);
+  height:48%; border-radius:50%;
+  background:
+    radial-gradient(60% 190% at 50% 0%, rgba(255,255,255,.95) 28%, rgba(255,255,255,0) 29%),
+    linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,0));
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 2px 0 rgba(255,255,255,.35));
+  animation: slosh 3.2s ease-in-out infinite;
+  z-index:1;
+}
+
+/* הטקסט "דרינק!" – מעל המים והגל */
+.brand-badge .brand-label{
+  position:absolute; inset:auto 0 0 0; top:12px; z-index:2;
+  text-align:center;
+  font:900 14px/1 "Frank Ruhl Libre", "Rubik", system-ui, sans-serif;
+  letter-spacing:.3px;
+  background: linear-gradient(180deg,#113257,#1e40af 55%,#22d3ee);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-stroke:.6px rgba(10,35,80,.25);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.35),
+    0 0 10px rgba(255,255,255,.18);
+  pointer-events:none; /* כל הלחיצה על העיגול */
+}
+
+.brand-badge:active{ transform: translateY(1px) scale(.985); }
+
+/* אם כבר יש לך float – אפשר להחליף ל-float לשמירת סנכרון */
+@keyframes bob{
+  0%,100%{ transform: translateY(0) rotate(-.2deg); }
+  50%    { transform: translateY(-5px) rotate(.25deg); }
+}
+@keyframes slosh{
+  0%   { transform: translateX(-10%); }
+  50%  { transform: translateX( 10%); }
+  100% { transform: translateX(-10%); }
+}

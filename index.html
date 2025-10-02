@@ -4,234 +4,263 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>דרינק! — מונה מים אישי</title>
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="ship.css" />
+  <link rel="stylesheet" href="brand.css" />
 </head>
 <body>
 
-  <!-- גל במסך מלא + גאליאון סביב הכותרת -->
-  <header class="o-header">
-    <div class="ripple-hero edge hero-full">
-      <canvas id="rippleHero"></canvas>
+<a class="brand-badge" href="#" aria-label="דרינק!">
+  <span class="brand-label">דרינק!</span>
+</a>
 
-      <div class="hero-overlay left">
-        <!-- לפני: <div class="galleon modern"> -->
-<div class="galleon tallship">
-  <div class="g-hull"></div>
-  <div class="g-stern"></div>
-  <div class="g-prow"></div>
-  <div class="g-mast"></div>
-  <div class="g-sail g-sail-a"></div>
-  <div class="g-sail g-sail-b"></div>
-  <div class="g-flag"></div>
-  <div class="g-title">
-    <h1 class="brand-he">דרינק!</h1>
-    <p class="brand-sub">מונה מים אישי</p>
-  </div>
-  <div class="g-portholes"><span></span><span></span><span></span></div>
-</div>
-
-        </div>
-      </div>
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דרינק!</title>
+ </head>
+ <body>
     
+ </body>
+ </html></a>
 
-    <blockquote id="quote" class="quote" aria-live="polite">טוען…</blockquote>
+
+  <!-- HERO: ship + animated waves, sized for phones -->
+  <header class="hero edge hero-compact">
+    <svg class="hero-waves" viewBox="0 0 1440 240" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="sea-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#79d6ff"/><stop offset="1" stop-color="#35b5ff"/>
+        </linearGradient>
+      </defs>
+      <path id="sea1" d="M0,160 C280,240 480,80 720,160 C960,240 1160,80 1440,160 L1440,240 L0,240 Z" fill="url(#sea-grad)" opacity=".9"></path>
+      <path id="sea2" d="M0,170 C280,250 480,90 720,170 C960,250 1160,90 1440,170 L1440,240 L0,240 Z" fill="#4fb6ff" opacity=".55"></path>
+      <path id="sea3" d="M0,180 C280,260 480,100 720,180 C960,260 1160,100 1440,180 L1440,240 L0,240 Z" fill="#2da6ff" opacity=".45"></path>
+    </svg>
+
+    <div class="ship-wrap">
+      <svg id="ship" class="real-ship" viewBox="0 0 900 360" aria-label="ספינת מפרשים">
+        <ellipse cx="450" cy="310" rx="250" ry="18" fill="rgba(0,0,0,.20)"/>
+        <defs>
+          <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#a5743d"/><stop offset="1" stop-color="#6b4725"/>
+          </linearGradient>
+          <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffd77a"/><stop offset="1" stop-color="#c99a2a"/>
+          </linearGradient>
+          <radialGradient id="sail" cx="20%" cy="50%" r="120%">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fff6e5"/><stop offset="1" stop-color="#eadfbf"/>
+          </radialGradient>
+        </defs>
+
+        <path d="M80 260 C170 230, 310 220, 430 210 C600 200, 720 220, 820 250 
+                 L820 260 C780 300, 120 300, 80 260 Z"
+              fill="url(#wood)" stroke="#4f3218" stroke-width="2"/>
+        <rect x="130" y="232" width="570" height="6" rx="3" fill="url(#brass)"/>
+        <path d="M820 250 L860 230 L860 260 L820 260 Z" fill="url(#wood)" stroke="#4f3218" stroke-width="2"/>
+        <rect x="150" y="200" width="540" height="18" rx="6" fill="#8f6337"/>
+        <rect x="260" y="80"  width="10" height="140" rx="4" fill="url(#wood)"/>
+        <rect x="450" y="60"  width="12" height="165" rx="5" fill="url(#wood)"/>
+        <rect x="635" y="90"  width="10" height="130" rx="4" fill="url(#wood)"/>
+        <g class="sail s1"><path d="M265 90 L450 90 L420 200 L265 200 Z" fill="url(#sail)" stroke="#e5d6b0"/></g>
+        <g class="sail s2"><path d="M455 72 L635 72 L612 200 L455 200 Z" fill="url(#sail)" stroke="#e5d6b0"/></g>
+        <g class="sail s3"><path d="M640 102 L750 102 L735 190 L640 190 Z" fill="url(#sail)" stroke="#e5d6b0"/></g>
+
+        <!-- ד! על הדגל -->
+        <g class="flag">
+          <path d="M456 55 L456 30" stroke="#8b5f33" stroke-width="4"/>
+          <path d="M456 36 L515 48 L456 60 Z" fill="url(#brass)"/>
+          <text x="470" y="52" font-family="Frank Ruhl Libre" font-weight="900" font-size="20" fill="#0b1d33">ד!</text>
+        </g>
+      </svg>
+    </div>
   </header>
 
-  <!-- קנבס קונפטי על כל המסך -->
-  <canvas id="confettiTop" class="confetti-top" aria-hidden="true"></canvas>
+  <!-- Quote -->
+  <blockquote id="quote" class="quote">“וְשָׁאַבְתֶּם מַיִם בְּשָׂשׂוֹן — ישעיהו י״ב”</blockquote>
 
-  <main class="o-main">
-    <!-- כרטיס המחשבון -->
-    <section class="card">
-      <h2 class="card-title">מחשבון צריכת מים יומית</h2>
+  <!-- Confetti canvas -->
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
 
-      <form id="calcForm" class="grid">
+  <main class="app">
 
-        <label>מין
-          <select id="sex" required>
-            <option value="female">נקבה</option>
-            <option value="male">זכר</option>
-          </select>
-        </label>
+    <!-- ===== PROGRESS ===== -->
+    <section class="card progress-card">
+      <div class="topbar"><span id="today"></span></div>
 
-        <!-- משקל -->
-        <label>משקל
-          <div class="row metric-row">
-            <button id="openWeight" class="btn ghost equal" type="button">בחר/י משקל</button>
-            <div class="stepper">
-              <button class="step" type="button" id="wPlus"  aria-label="יותר">+</button>
-              <input id="weight" type="number" min="30" max="200" step="0.5" inputmode="decimal" />
-              <button class="step" type="button" id="wMinus" aria-label="פחות">−</button>
-            </div>
+      <div class="gauge-wrap">
+        <div class="gauge" id="gauge">
+          <div class="gauge-fill" id="gaugeFill"></div>
+          <div class="gauge-cover">
+            <div id="gaugePct" class="water-title">0%</div>
+            <div class="gauge-note"><span id="drankLiters">0</span> ל׳ מתוך <span id="targetLiters">0</span> ל׳</div>
           </div>
-        </label>
-
-        <!-- גיל -->
-        <label>גיל
-          <div class="row metric-row">
-            <button id="openAge" class="btn ghost equal" type="button">בחר/י גיל</button>
-            <div class="stepper">
-              <button class="step" type="button" id="aPlus"  aria-label="יותר">+</button>
-              <input id="age" type="number" min="5" max="120" step="1" placeholder="בשנים" />
-              <button class="step" type="button" id="aMinus" aria-label="פחות">−</button>
-            </div>
-          </div>
-        </label>
-
-        <!-- גובה -->
-        <label>גובה
-          <div class="row metric-row">
-            <button id="openHeight" class="btn ghost equal" type="button">בחר/י גובה</button>
-            <div class="stepper">
-              <button class="step" type="button" id="hPlus"  aria-label="יותר">+</button>
-              <input id="height" type="number" min="100" max="230" step="1" placeholder="גובה" />
-              <button class="step" type="button" id="hMinus" aria-label="פחות">−</button>
-            </div>
-          </div>
-        </label>
-
-        <label>דקות פעילות היום
-          <div class="select-suffix">
-            <select id="activeMin" class="with-suffix nice-select">
-              <option value="0">0</option>
-              <option value="15">15</option>
-              <option value="30" selected>30</option>
-              <option value="45">45</option>
-              <option value="60">60</option>
-              <option value="90">90</option>
-            </select>
-            <span class="suffix">דקות</span>
-          </div>
-        </label>
-
-        <!-- צ׳קבוקסים + אייקונים -->
-        <div class="checks row one-line">
-          <label class="check"><input id="isHot" type="checkbox" /><span>אקלים חם</span></label>
-          <label class="check female-only"><input id="pregnant" type="checkbox" /><span>בהריון</span></label>
-          <label class="check female-only"><input id="lactating" type="checkbox" /><span>מניקה</span></label>
-
-          <div class="spacer"></div>
-
-          <!-- אייקון גובה־מקום -->
-          <button id="openAltitude" class="btn icon-btn" type="button" aria-label="גובה מקום" title="גובה מקום">
-            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="#60a5fa" stroke-width="1.8">
-              <defs><linearGradient id="altG" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#6f5bf0"/>
-              </linearGradient></defs>
-              <path d="M3 18l6-10 3 5 2-3 7 8H3z" fill="url(#altG)" stroke="none"/>
-              <circle cx="18" cy="5" r="1.6" fill="#a5b4fc" stroke="none"/>
-            </svg>
-          </button>
-
-          <!-- אייקון קפה -->
-          <button id="openCoffee" class="btn icon-btn" type="button" aria-label="קפה" title="קפה">
-            <svg viewBox="0 0 24 24" class="icon" fill="none" stroke="#60a5fa" stroke-width="1.8">
-              <path d="M3 9h13v6a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9z" fill="#e6f4ff" stroke="#7cc3ff"/>
-              <path d="M16 9h2.6a2.4 2.4 0 0 1 0 4.8H16" />
-              <path d="M9 4c0 1 .7 1.3.7 2s-.7 1-.7 1M12 4c0 1 .7 1.3.7 2s-.7 1-.7 1" />
-            </svg>
-          </button>
+          <span id="ringSplash" class="ring-splash"></span>
         </div>
+      </div>
 
-        <button class="btn ripple equal" type="submit">חשב/י</button>
-      </form>
+      <div class="river"><div id="riverFill" class="river-fill stripes stage1"></div></div>
 
-      <!-- יעד ממורכז + שימר -->
-      <output id="result" class="result">
-        <div class="totals">
-          <div class="total-item shimmer">
-            <span class="lbl">יעד:</span>
-            <span id="targetL" class="num">—</span>
-            <span class="unit">ליטר</span>
-            <span class="sep">·</span>
-            <span id="targetCups" class="num">—</span>
-            <span class="unit">כוסות</span>
-          </div>
-        </div>
+      <div class="btn-row grid-3">
+        <button class="btn primary equal" id="add250">+ 250 מ״ל</button>
+        <button class="btn primary equal" id="add500">+ 500 מ״ל</button>
+        <button class="btn primary equal" id="add1000">+ 1 ליטר</button>
+      </div>
+      <div class="btn-row"><button class="btn danger equal" id="resetIntake">איפוס</button></div>
 
-        <!-- מד התקדמות Edge-to-Edge -->
-        <div class="progress river edge" id="river">
-          <div class="progress-head">
-            <label>שתייה היום</label>
-            <div class="reading">
-              <span id="intakeCups" class="num">0.0</span><span class="unit">כוס</span>
-              <span class="sep">·</span>
-              <span id="intakeMl" class="num">0</span><span class="unit">מ״ל</span>
-            </div>
-          </div>
-
-          <div class="progress-bar capsule">
-            <div id="bar" class="fill stage1">
-              <span class="droplet" aria-hidden="true"></span>
-              <canvas id="bubbles"></canvas>
-            </div>
-          </div>
-
-          <!-- ריווח נדיב יותר בין הכפתורים -->
-          <div class="row btn-row roomy">
-            <button id="add250"  class="btn ghost ripple equal">+250 מ״ל</button>
-            <button id="add500"  class="btn ghost ripple equal">+500 מ״ל</button>
-            <button id="add1000" class="btn ghost ripple equal">+1 ליטר</button>
-            <button id="resetIntake" class="btn danger ripple equal">איפוס</button>
-          </div>
-        </div>
-      </output>
+      <div class="reading-row">
+        <span class="reading-title">שתינו היום </span>
+        <span class="reading-line">
+          <span id="intakeCups" class="num glow">0.0</span><span class="unit">כוס\ות</span>
+          <span class="sep">·</span>
+          <span id="intakeMl" class="num glow">0</span><span class="unit">מ״ל</span>
+        </span>
+      </div>
     </section>
 
-    <!-- כרטיס התראות -->
-    <section class="card">
+    <!-- ===== CALCULATOR ===== -->
+    <section class="card form-card">
+      <h2 class="card-title">מחשבון צריכת מים יומית</h2>
+
+      <!-- Gender (RTL select) -->
+      <label class="lbl">
+        <div class="select-suffix rtl-right">
+          <select id="gender" class="nice-select">
+            <option value="female" selected>נקבה</option>
+            <option value="male">זכר</option>
+          </select>
+          <span class="suffix">מין</span>
+        </div>
+      </label>
+
+      <!-- Three identical spinner rows (same height/width) -->
+      <div class="spin-row">
+        <div class="spin-label">בחר/י משקל</div>
+        <div class="spinner">
+          <button class="step minus" data-for="w" type="button">−</button>
+          <div id="weight" class="spin-val">70</div>
+          <button class="step plus" data-for="w" type="button">+</button>
+        </div>
+        <button id="openWeight" class="chip-open" type="button">משקלים</button>
+      </div>
+
+      <div class="spin-row">
+        <div class="spin-label">בחר/י גיל</div>
+        <div class="spinner">
+          <button class="step minus" data-for="a" type="button">−</button>
+          <div id="age" class="spin-val">26</div>
+          <button class="step plus" data-for="a" type="button">+</button>
+        </div>
+        <button id="openAge" class="chip-open" type="button">גילים</button>
+      </div>
+
+      <div class="spin-row">
+        <div class="spin-label">בחר/י גובה</div>
+        <div class="spinner">
+          <button class="step minus" data-for="h" type="button">−</button>
+          <div id="height" class="spin-val">169</div>
+          <button class="step plus" data-for="h" type="button">+</button>
+        </div>
+        <button id="openHeight" class="chip-open" type="button">גבהים</button>
+      </div>
+
+      <label class="lbl">דקות פעילות היום
+        <div class="select-suffix suffix-after">
+          <select id="activity" class="nice-select with-suffix">
+            <option value="0">0</option>
+            <option value="15">15</option>
+            <option value="30" selected>30</option>
+            <option value="45">45</option>
+            <option value="60">60</option>
+            <option value="90">90</option>
+          </select>
+          <span class="suffix">דקות</span>
+        </div>
+      </label>
+
+      <!-- Replaced tick-boxes with icons that open a choice window -->
+      <div class="icon-grid">
+        <button class="icon-tile" id="openClimate"  aria-label="אקלים חם">
+          <span class="i sun"></span><span>אקלים חם</span>
+        </button>
+        <button class="icon-tile female-only" id="openLact" aria-label="מניקה">
+          <span class="i bottle"></span><span>מניקה</span>
+        </button>
+        <button class="icon-tile female-only" id="openPreg"  aria-label="בהריון">
+          <span class="i heart"></span><span>בהריון</span>
+        </button>
+        <button class="icon-tile" id="openAltitude" aria-label="גובה מקום">
+          <span class="i mountain"></span><span>גובה</span>
+        </button>
+        <button class="icon-tile" id="openCoffee"   aria-label="קפה">
+          <span class="i mug"></span><span>קפה</span>
+        </button>
+      </div>
+
+      <button class="btn cta equal" id="calc" type="button">חשב/י</button>
+      <div class="target" id="targetNote">יעד: <span id="targetLiters2" class="water-title small">—</span> ליטר</div>
+    </section>
+
+    <!-- ===== REMINDERS ===== -->
+    <section class="card reminder-card">
       <h2 class="card-title">תזכורות והתראות</h2>
 
-      <div class="grid">
-        <label>כל כמה זמן להזכיר?
-          <div class="select-suffix">
-            <select id="remEvery" class="with-suffix nice-select">
-              <option>15</option><option>30</option><option selected>45</option><option>60</option><option>90</option>
+      <div class="rem-grid">
+        <label class="lbl">כל כמה דקות להזכיר?
+          <div class="select-suffix suffix-after">
+            <select id="interval" class="nice-select with-suffix">
+              <option value="15">15</option><option value="30" selected> 30</option>
+              <option value="45">45</option><option value="60">60</option><option value="90">90</option>
             </select>
-            <span class="suffix">דקות</span>
+            <span class="suffix"></span>
           </div>
         </label>
 
-        <div class="checks row one-line tight">
-          <label class="check"><input id="playSound" type="checkbox" checked /><span>צליל טפטוף</span></label>
-          <label class="check"><input id="vibrate" type="checkbox" /><span>רטט בנייד</span></label>
+        <div class="btn-stack">
+          <button class="btn primary equal" id="startRem">התחל תזכורות</button>
+          <button class="btn danger equal"  id="stopRem">עצור</button>
         </div>
-      </div>
 
-      <div class="row btn-row bump roomy">
-        <button id="startRem" class="btn primary ripple equal">התחל תזכורות</button>
-        <button id="stopRem"  class="btn danger  ripple equal">עצור</button>
-        <button id="testPing" class="btn ripple equal">בדיקה</button>
-      </div>
-
-      <h3 class="h3">התראה חד־פעמית</h3>
-      <div class="grid">
-        <label>בחר/י זמן
-          <div class="select-suffix">
-            <select id="alarmMin" class="with-suffix nice-select"></select>
-            <span class="suffix">דקות</span>
-          </div>
-        </label>
-      </div>
-      <div class="row btn-row">
-        <button id="startAlarm"  class="btn ripple equal">הפעל התראה</button>
-        <button id="cancelAlarm" class="btn ghost ripple equal">בטל התראה</button>
-      </div>
-      <p class="micro">טיפ: אשר/י התראות בדפדפן כשתופיע בקשה.</p>
+      <audio id="chime" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6b5b9a1422.mp3?filename=notification-bell-58741.mp3"></audio>
     </section>
   </main>
 
-  <footer class="o-foot"><span class="footnote">© 2025 דרינק! · שתו במודעות וברכות.</span></footer>
+  <!-- ===== Modals (all centered) ===== -->
+  <div id="weightModal"  class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>בחר/י משקל</h3><div id="weightChips" class="chips"></div><div class="row"><button class="btn equal" data-close="#weightModal">סגור</button></div></div></div>
 
-  <!-- מודלים (מרוכזים; סגירה אוטומטית לאחר בחירה) -->
-  <div id="weightModal"  class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>בחר/י משקל</h3><div id="weightChips" class="chips"></div><div class="row"><button id="closeWeight" class="btn equal">סגור</button></div></div></div>
-  <div id="ageModal"     class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>בחר/י גיל</h3><div id="ageChips" class="chips"></div><div class="row"><button id="closeAge" class="btn equal">סגור</button></div></div></div>
-  <div id="heightModal"  class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>בחר/י גובה</h3><div id="heightChips" class="chips"></div><div class="row"><button id="closeHeight" class="btn equal">סגור</button></div></div></div>
-  <div id="coffeeModal"  class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>קפה — כוסות או מ״ל</h3><div id="coffeeChips" class="chips"></div><div class="row" style="margin-top:10px"><input id="coffeeMl" type="number" min="0" step="10" placeholder="הכנס/י מ״ל" /><button id="setCoffeeMl" class="btn">שמור מ״ל</button></div><p class="micro">כל כוס (~240 מ״ל) מוסיפה ~100 מ״ל ליעד היומי.</p><div class="row"><button id="closeCoffee" class="btn equal">סגור</button></div></div></div>
-  <div id="altitudeModal" class="modal" hidden><div class="modal-backdrop"></div><div class="modal-card" role="dialog" aria-modal="true"><h3>גובה מקום</h3><div id="altitudeChips" class="chips"></div><div class="row"><button id="closeAltitude" class="btn equal">סגור</button></div></div></div>
+  <div id="ageModal"     class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>בחר/י גיל</h3><div id="ageChips" class="chips"></div><div class="row"><button class="btn equal" data-close="#ageModal">סגור</button></div></div></div>
 
+  <div id="heightModal"  class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>בחר/י גובה</h3><div id="heightChips" class="chips"></div><div class="row"><button class="btn equal" data-close="#heightModal">סגור</button></div></div></div>
+
+  <div id="coffeeModal"  class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>קפה — כוסות או מ״ל</h3><div id="coffeeChips" class="chips"></div>
+      <div class="row" style="margin-top:10px"><input id="coffeeMl" type="number" min="0" step="10" placeholder="הכנס/י מ״ל" />
+        <button id="setCoffeeMl" class="btn equal">שמור מ״ל</button></div>
+      <p class="micro">כל כוס (~240 מ״ל) מוסיפה ~120 מ״ל (פיצוי).</p><div class="row"><button class="btn equal" data-close="#coffeeModal">סגור</button></div></div></div>
+
+  <div id="altitudeModal" class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>גובה מקום</h3><div id="altitudeChips" class="chips"></div><div class="row"><button class="btn equal" data-close="#altitudeModal">סגור</button></div></div></div>
+
+  <!-- icon-toggles as windows -->
+  <div id="climateModal"  class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>אקלים חם?</h3><div class="chips"><button id="climateYes">כן</button><button id="climateNo">לא</button></div>
+      <div class="row"><button class="btn equal" data-close="#climateModal">סגור</button></div></div></div>
+  <div id="lactModal"     class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>מניקה?</h3><div class="chips"><button id="lactYes">כן</button><button id="lactNo">לא</button></div>
+      <div class="row"><button class="btn equal" data-close="#lactModal">סגור</button></div></div></div>
+  <div id="pregModal"     class="modal" hidden><div class="modal-backdrop"></div>
+    <div class="modal-card"><h3>בהריון?</h3><div class="chips"><button id="pregYes">כן</button><button id="pregNo">לא</button></div>
+      <div class="row"><button class="btn equal" data-close="#pregModal">סגור</button></div></div></div>
+
+  <!-- JS -->
   <script src="app.js"></script>
 </body>
 </html>
