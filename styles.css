@@ -170,3 +170,88 @@ input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin
   .o-main{grid-template-columns:repeat(2,minmax(420px,1fr)); gap:28px}
   .card{padding:30px}
 }
+/* === Title as part of the hull (no container) === */
+.galleon.modern .g-title{
+  position:absolute;
+  bottom:28px;         /* מושב נמוך על הדק/גוף */
+  right:36px;
+  padding:0;
+  background:none;     /* אין קופסה */
+  border:none;
+  box-shadow:none;
+  backdrop-filter:none;
+  transform:skewX(-7deg); /* זווית קלה בהתאם לקו גוף הספינה */
+}
+
+/* הכותרת "צבועה" על המתכת – הבלטה עדינה וקריאות גבוהה */
+.galleon.modern .brand-he{
+  margin:0;
+  font:900 clamp(38px,5.6vw,78px)/0.95 "Frank Ruhl Libre",serif;
+  letter-spacing:.5px;
+  /* גוונים של צבע ימי עם תחושת צבע ספריי על המתכת */
+  background:linear-gradient(180deg,#dbe6f6 0%, #9ec2ff 48%, #5fb9ff 78%, #b8d4ff 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  /* חיתוך/הבלטה על החומר – בלי קופסה */
+  -webkit-text-stroke:0.8px rgba(12,28,48,.45);
+  text-shadow:
+     0 1px 0 #ffffffaa,       /* היילייט לבן קטן */
+     0 2px 2px rgba(5,15,30,.25),
+     0 10px 20px rgba(22,58,116,.20);
+  mix-blend-mode:multiply;    /* משתלב עם צבעי הגוף */
+}
+
+/* כיתוב משני – "מונה מים אישי" – ממוקם מעט נמוך, גם בלי רקע */
+.galleon.modern .brand-sub{
+  margin:.25rem .2rem 0 0;
+  font:800 clamp(11px,1.3vw,16px)/1 "Rubik";
+  color:#173a59;
+  opacity:.92;
+  transform:translateY(4px) skewX(-7deg);
+}
+
+/* רצועת גוון עדינה מתחת לטקסט (כמו צביעה על גוף) – לא קופסה! */
+.galleon.modern .g-title::before{
+  content:"";
+  position:absolute;
+  inset:-2px -6px -4px -6px;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.08));
+  opacity:.10;          /* מאוד חלש – רק מחזק קריאות על מתכת בהירה */
+  filter:blur(.4px);
+  transform:skewX(-5deg);
+  pointer-events:none;
+}
+
+/* קו דק של "סימון צבע" מתכתי – משתלב בגוף */
+.galleon.modern .g-title::after{
+  content:"";
+  position:absolute; inset:auto 0 -8px 0; height:1.5px;
+  background:linear-gradient(90deg,#8fb3da80,transparent 70%);
+  opacity:.55;
+}
+/* ===== Mobile polish pack for the hero/wave ===== */
+@media (max-width:430px){
+  .ripple-hero.hero-full{
+    height: calc(100dvh - 6px);       /* ממלא מסך בטוח לנוטש */
+    border-radius: 0 0 24px 24px;
+  }
+  .ripple-hero{ box-shadow: 0 18px 40px rgba(42,161,255,.16) }
+  .quote{ margin: 8px 16px 12px }
+}
+/* === Mobile Hero Compact — full-bleed width, shorter height === */
+@media (max-width: 480px){
+  /* ההירו מתפרס על כל רוחב הטלפון */
+  .ripple-hero.edge{
+    margin-inline: calc(50% - 50vw) !important;
+    width: 100vw !important;
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+    border-radius: 0 0 22px 22px;
+    box-shadow: 0 18px 40px rgba(42,161,255,.16);
+  }
+  /* גובה קומפקטי: ~28vh עם מינימום בטוח */
+  .ripple-hero.hero-full{
+    height: min(28vh, 260px) !important;
+    min-height: 180px;
+  }
+  /* פחות ריווח בין ההירו לציטוט/כרטיס הראשון */
+  .quote{ margin: 10px 16px 12px }
+}
