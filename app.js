@@ -270,20 +270,6 @@ function stopRepeating(){
   fireNotify('עצרתי תזכורות');
 }
 
-/* one-shot */
-async function startOneShot(){
-  const sel = document.getElementById('oneShot') || document.getElementById('alarmMin');
-  const mins = Number(sel?.value || 1);
-  clearTimeout(Rem.oneShotTimer);
-  await ensureNotifyPermission();
-  Rem.oneShotTimer = setTimeout(()=>fireNotify(`התראה חד־פעמית — ${mins} דקות`), mins*60*1000);
-  toast(`אקרא בעוד ${mins} דקות`);
-}
-function cancelOneShot(){
-  clearTimeout(Rem.oneShotTimer);
-  Rem.oneShotTimer = null;
-  toast('ביטלתי התראה חד־פעמית');
-}
 
 /* keep timing correct when tab returns to foreground */
 document.addEventListener('visibilitychange', ()=>{
