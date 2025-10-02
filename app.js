@@ -179,50 +179,128 @@ by('add500')  ?.addEventListener('click',()=>addWater(500));
 by('add1000') ?.addEventListener('click',()=>addWater(1000));
 by('resetIntake')?.addEventListener('click',()=>{ S.drankMl=0; updateGauge(); });
 
-/* ---------- Notifications & Reminders (fixed) ---------- */
-const Rem = { intervalTimer:null, oneShotTimer:null };
+/* ================= REMINDERS (fixed & resilient) ================= */
+
+// unlock audio on first user gesture (iOS/Safari)
+(function primeAudio(){
+  const a = document.getElementById('chime');
+  if(!a) return;
+  const unlock = () => {
+    a.muted = true;
+    a.play().catch(()=>{}).finally(()=>{
+      try { a.pause(); a.currentTime = 0; } catch(_) {}
+      a.muted = false;
+      window.removeEventListener('pointerdown', unlock, {capture:true});
+      window.removeEventListener('keydown', unlock, {capture:true});
+    });
+  };
+  window.addEventListener('pointerdown', unlock, {capture:true, once:true});
+  window.addEventListener('keydown', unlock, {capture:true, once:true});
+})();
+
+const Rem = {
+  intervalTimer: null,
+  oneShotTimer : null,
+  intervalMins : 45,
+  nextAt       : null
+};
+
+const SECURE_ORIGIN = location.protocol === 'https:' || location.hostname === 'localhost';
 
 async function ensureNotifyPermission(){
-  if(!('Notification' in window)) return false;
-  if(Notification.permission==='granted') return true;
-  try{ return (await Notification.requestPermission())==='granted'; }
-  catch(_){ return false; }
+  if(!('Notification' in window) || !SECURE_ORIGIN) return false;
+  if(Notification.permission === 'granted') return true;
+  try { return (await Notification.requestPermission()) === 'granted'; }
+  catch { return false; }
 }
-function fireNotify(txt){
-  // system notification (if allowed)
-  if('Notification' in window && Notification.permission==='granted'){
-    try{ new Notification('דרינק! 💧',{body:txt}); }catch(_){}
+
+function toast(msg){
+  let t = document.getElementById('toast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.dir = 'rtl';
+    t.style.cssText = 'position:fixed;inset:auto 12px 12px 12px;z-index:9999;padding:12px 16px;border-radius:14px;background:rgba(20,40,70,.95);color:#fff;font:800 14px/1.3 Rubik;box-shadow:0 12px 30px rgba(0,0,0,.25);text-align:center';
+    document.body.appendChild(t);
   }
-  // sound + vibration
-  const ch=by('chime'); if(ch){ try{ ch.currentTime=0; ch.play(); }catch(_){} }
-  if(navigator.vibrate){ navigator.vibrate([90,40,90]); }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateY(0)';
+  clearTimeout(t._hide);
+  t._hide = setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 1600);
 }
+
+function fireNotify(text){
+  // web notification if allowed
+  if('Notification' in window && Notification.permission === 'granted'){
+    try { new Notification('דרינק! 💧', { body: text }); } catch(_) {}
+  } else {
+    toast(text);
+  }
+  // sound + vibration as reliable fallback
+  const a = document.getElementById('chime');
+  if(a){ try { a.currentTime = 0; a.play(); } catch(_) {} }
+  if(navigator.vibrate){ navigator.vibrate([100,60,100]); }
+}
+
+/* drift–free repeating timer using setTimeout */
+function scheduleNextTick(){
+  clearTimeout(Rem.intervalTimer);
+  const delay = Math.max(0, Rem.nextAt - Date.now());
+  Rem.intervalTimer = setTimeout(() => {
+    fireNotify('זמן ללגימה!');
+    Rem.nextAt = Date.now() + Rem.intervalMins*60*1000;
+    scheduleNextTick();
+  }, delay);
+}
+
 async function startRepeating(){
-  const sel = by('remEvery') || by('interval');
-  const mins = Number(sel?.value || 45);
-  if(Rem.intervalTimer) clearInterval(Rem.intervalTimer);
-  await ensureNotifyPermission();
-  Rem.intervalTimer = setInterval(()=>fireNotify('זמן ללגימה!'), mins*60*1000);
+  const sel = document.getElementById('remEvery') || document.getElementById('interval');
+  Rem.intervalMins = Number(sel?.value || 45);
+  Rem.nextAt = Date.now() + Rem.intervalMins*60*1000;
+  await ensureNotifyPermission();  // לא קריטי אם נכשל
+  scheduleNextTick();
   fireNotify('מתחילים להזכיר 💙');
 }
+
 function stopRepeating(){
-  if(Rem.intervalTimer) clearInterval(Rem.intervalTimer);
-  Rem.intervalTimer=null;
+  clearTimeout(Rem.intervalTimer);
+  Rem.intervalTimer = null;
+  Rem.nextAt = null;
   fireNotify('עצרתי תזכורות');
 }
+
+/* one-shot */
 async function startOneShot(){
-  const sel = by('oneShot') || by('alarmMin');
+  const sel = document.getElementById('oneShot') || document.getElementById('alarmMin');
   const mins = Number(sel?.value || 1);
-  if(Rem.oneShotTimer) clearTimeout(Rem.oneShotTimer);
+  clearTimeout(Rem.oneShotTimer);
   await ensureNotifyPermission();
   Rem.oneShotTimer = setTimeout(()=>fireNotify(`התראה חד־פעמית — ${mins} דקות`), mins*60*1000);
-  fireNotify(`אקרא בעוד ${mins} דקות`);
+  toast(`אקרא בעוד ${mins} דקות`);
 }
 function cancelOneShot(){
-  if(Rem.oneShotTimer) clearTimeout(Rem.oneShotTimer);
-  Rem.oneShotTimer=null;
-  fireNotify('ביטלתי התראה חד־פעמית');
+  clearTimeout(Rem.oneShotTimer);
+  Rem.oneShotTimer = null;
+  toast('ביטלתי התראה חד־פעמית');
 }
+
+/* keep timing correct when tab returns to foreground */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible' && Rem.nextAt){
+    scheduleNextTick(); // יתקן דילוגים/ת׳רוטלינג
+  }
+});
+
+/* wire buttons (supports both old & new ids) */
+(document.getElementById('startRem')  || {}).onclick = startRepeating;
+(document.getElementById('stopRem')   || {}).onclick = stopRepeating;
+(document.getElementById('testPing')  || {}).onclick = ()=>fireNotify('דוגמת צליל 🚿');
+(document.getElementById('startAlarm')|| {}).onclick = startOneShot;
+(document.getElementById('cancelAlarm')||{}).onclick = cancelOneShot;
+/* for older markup */
+(document.getElementById('fireOne')   || {}).onclick = startOneShot;
+/* ================================================================ */
 
 /* wire buttons (תומך בשמות החדשים והישנים) */
 by('startRem')  ?.addEventListener('click',startRepeating);
