@@ -260,7 +260,7 @@ async function startRepeating(){
   Rem.nextAt = Date.now() + Rem.intervalMins*60*1000;
   await ensureNotifyPermission();  // לא קריטי אם נכשל
   scheduleNextTick();
-  fireNotify('מתחילים להזכיר 💙');
+  fireNotify('תזכורת הופעלה');
 }
 
 function stopRepeating(){
